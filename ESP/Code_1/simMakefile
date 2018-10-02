@@ -1,0 +1,13 @@
+all: release
+	#export GTEST_DIR=
+	#g++ -isystem ${GTEST_DIR}/include -pthread unit_test_case.c code_to_be_tested.c Gtest_main.c libgtest.a -o my_test
+
+release:
+	g++ main.c -o release
+test:
+	g++ -isystem ${HOME}/Studium/WS18_fin/prg_c/ESP/googletest/googletest/include/ -pthread unit_test_case.c code_to_be_tested.c Gtest_main.c libgtest.a -o my_test 
+
+clean:
+	rm my_test
+	rm release
+
