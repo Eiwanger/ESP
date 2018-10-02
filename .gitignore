@@ -3,3 +3,4 @@
 # ignore textfiles
 *.odt
 bin/
+*.png

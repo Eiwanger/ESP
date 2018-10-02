@@ -3,7 +3,7 @@
 
 
 
-
+// return length of a given string
 int my_strlen(char *s)
 {
 	int length = -1;
@@ -24,6 +24,8 @@ int my_strlen(char *s)
 	return length;
 }
 
+// converts all character from a given string to upper case and returns the
+// number of changed characters
 int str2upper(char *s)
 {
 	int i;
@@ -43,6 +45,10 @@ int str2upper(char *s)
 	return count;
 }
 
+
+
+// converts all character from a given string to lower case and returns the
+// number of changed characters 
 int str2lower_(char *s)
 {
 	int i;
@@ -62,6 +68,7 @@ int str2lower_(char *s)
 	return count;
 }
 
+// removes all numbers from a string and returns the new lenght of the string
 int str_strip_numbers(char *s)
 {
 	int i, j, count = 0;
@@ -89,6 +96,7 @@ int str_strip_numbers(char *s)
 	return count;
 }
 
+// copy a given string to anther given string
 void mystrcpy(char *s, char *d)
 {
 	int i;
@@ -107,6 +115,10 @@ void mystrcpy(char *s, char *d)
 	}
 }
 
+// compare to string together and return the place of the first
+// different character. 0 if strings are equal
+// -n if s is ordered before in alphabet than d
+// n if d is ordered before s
 int mystrcmp(char *s, char *d)
 {
 	int i, count_S, count_D;
@@ -142,6 +154,8 @@ int mystrcmp(char *s, char *d)
 return 0;
 }
 
+// creates a duplicate of a given string and returns a pointer to 
+// the new string
 char* strdupl(char *s)
 {
 	int i = 0;
