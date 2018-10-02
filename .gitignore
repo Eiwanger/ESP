@@ -2,3 +2,4 @@
 
 # ignore textfiles
 *.odt
+bin/
