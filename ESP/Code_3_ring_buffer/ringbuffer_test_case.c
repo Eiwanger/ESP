@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 unsigned char buff[MAX_BUFFER];
-
 struct buffer_type b;
 
 TEST(init_buffer_test, test_OK)
@@ -212,83 +211,49 @@ TEST(add_char_to_buffer_test, test_pointer_error)
 
 }
 
-TEST(add_char_to_bufferTest, actbTest1) {
-	b.head = buff;
-	b.tail = buff;
-	b.buffer = buff;
-	ERROR_TYPE_t eT;
-	int retVal = add_char_to_buffer(&b, 'a',  &eT);
-	char  expChar[2];
-	expChar[1] = '\0';	
-	expChar[0] = (char)*(b.head-1);
-	EXPECT_STREQ("a", expChar);
-	EXPECT_EQ(1, retVal);
-	ERROR_TYPE_t eTComp = OK;
-	EXPECT_EQ(eTComp, eT);
-}
-
-TEST(add_char_to_bufferTest, actbTest2) {
-	b.head = buff+3;
-	b.tail = buff+1;
-	b.buffer = buff;
-	ERROR_TYPE_t eT;
-	int retVal = add_char_to_buffer(&b, 'b',  &eT);
-	char  expChar[2];
-	expChar[1] = '\0';	
-	expChar[0] = (char)*(b.head-1);
-	EXPECT_STREQ("b", expChar);
-	EXPECT_EQ(3, retVal);
-	ERROR_TYPE_t eTComp = OK;
-	EXPECT_EQ(eTComp, eT);
-}
-
-TEST(add_char_to_bufferTest, actbTest3) {
+TEST(add_char_to_bufferTest, test_buffer_circle_full) {
 	b.head = buff+4;
 	*(b.head-1) = 'u';
 	b.tail = buff;
 	b.buffer = buff;
-	ERROR_TYPE_t eT;
-	int retVal = add_char_to_buffer(&b, 'c',  &eT);
-	char  expChar[2];
-	expChar[1] = '\0';	
-	expChar[0] = (char)*(b.head-1);
-	EXPECT_STREQ("u", expChar);
-	EXPECT_EQ(-1, retVal);
-	ERROR_TYPE_t eTComp = BUFFER_FULL;
-	EXPECT_EQ(eTComp, eT);
+	//init_buffer(&b, buff);
+	ERROR_TYPE_t err;
+	ERROR_TYPE_t res = BUFFER_FULL;
+	int count = add_char_to_buffer(&b, 'c',  &err);
+
+	EXPECT_EQ((int)'u', (int)(*(b.head-1)));
+	EXPECT_EQ(-1, count);
+
+	EXPECT_EQ(res, err);
 }
 
-TEST(add_char_to_bufferTest, actbTest4) {
+TEST(add_char_to_bufferTest, test_buffer_cicle_full_2) {
 	b.head = buff+3;
 	b.tail = buff;
 	b.buffer = buff;
-	ERROR_TYPE_t eT;
-	int retVal = add_char_to_buffer(&b, 'd',  &eT);
-	char  expChar[2];
-	expChar[1] = '\0';	
-	expChar[0] = (char)*(b.head-1);
-	EXPECT_STREQ("d", expChar);
-	EXPECT_EQ(4, retVal);
-	ERROR_TYPE_t eTComp = BUFFER_FULL;
-	EXPECT_EQ(eTComp, eT);
+	//init_buffer(&b, buff);
+	ERROR_TYPE_t err;
+	ERROR_TYPE_t res = BUFFER_FULL;
+	int count = add_char_to_buffer(&b, 'd',  &err);
+
+	EXPECT_EQ((int)'d', (int)*(b.head-1));
+	EXPECT_EQ(4, count);
+	EXPECT_EQ(res, err);
 }
 
-TEST(add_char_to_bufferTest, actbTest5) {
-	b.head = buff;
-	b.tail = buff+2;
+TEST(add_char_to_bufferTest, test_add_empty)
+{
+	b.head = buff+3;
+	b.tail = buff;
 	b.buffer = buff;
-	ERROR_TYPE_t eT;
-	int retVal = add_char_to_buffer(&b, 'e',  &eT);
-	char  expChar[2];
-	expChar[1] = '\0';	
-	expChar[0] = (char)*(b.head-1);
-	EXPECT_STREQ("e", expChar);
-	EXPECT_EQ(4, retVal);
-	ERROR_TYPE_t eTComp = BUFFER_FULL;
-	EXPECT_EQ(eTComp, eT);
+	//init_buffer(&b, buff);
+	ERROR_TYPE_t err;
+	ERROR_TYPE_t res; 
+	int count = add_char_to_buffer(&b, '\0',  &err);
+	EXPECT_EQ(3, count);
+
+
 }
-
-
 
 TEST(get_char_from_buffer_test, test_default)
 {
@@ -300,9 +265,11 @@ TEST(get_char_from_buffer_test, test_default)
 	ERROR_TYPE_t res = OK;
 
 	unsigned char getAdded = 'a';
-	add_char_to_buffer(&b, getAdded, &err);
-	add_char_to_buffer(&b, getAdded, &err);	
-	unsigned char result = get_char_from_buffer(&b, &err);
+	*(b.head) = getAdded;
+	*(b.head+1)= getAdded;
+	b.head += 2;
+
+	char result = get_char_from_buffer(&b, &err);
 	EXPECT_EQ((int)result, (int)getAdded);
 	EXPECT_EQ(res, err);
 }
@@ -318,8 +285,9 @@ TEST(get_char_from_buffer_test, test_default_mid)
 	b.tail += 3;
 
 	unsigned char getAdded = 'b';
-	add_char_to_buffer(&b, getAdded, &err);	
-	unsigned char result = get_char_from_buffer(&b, &err);
+	*(b.head) = getAdded;
+	b.head += 1;
+	char result = get_char_from_buffer(&b, &err);
 	EXPECT_EQ((int)result, (int)getAdded);
 
 }
@@ -332,9 +300,8 @@ TEST(get_char_from_buffer_test, test_error_buffer_empty)
 	//init_buffer(&b, buff);
 	ERROR_TYPE_t err = OK;
 	ERROR_TYPE_t res = EMPTY_BUFFER;
-	unsigned char tmp = get_char_from_buffer(&b, &err);
-	// change 7 to 255 or a different value 
-	EXPECT_EQ(7, (int)tmp);
+	char tmp = get_char_from_buffer(&b, &err);
+	EXPECT_EQ(-1, (int)tmp);
 	EXPECT_EQ(res, err); 
 
 }
@@ -350,14 +317,15 @@ TEST(get_char_from_buffer_test, test_error_buffer_empty_2)
 	ERROR_TYPE_t err = OK;
 	ERROR_TYPE_t res = EMPTY_BUFFER;
 	unsigned char a = 'a';
-	add_char_to_buffer(&b, a, &err);
-	unsigned char tmp = get_char_from_buffer(&b, &err);
-	// change 7 to 255 or a different value 
+	*(b.head) = a;
+	b.head += 1;
+	//add_char_to_buffer(&b, a, &err);
+	char tmp = get_char_from_buffer(&b, &err);
 	EXPECT_EQ((int)a, (int)tmp);
 	EXPECT_EQ(res, err); 
 }
 
-TEST(get_char_from_buffer_test, test_error_buffer_empty_3)
+TEST(get_char_from_buffer_test, test_error_buffer_empty_circle)
 {
 	b.head = buff;
 	b.tail = buff;
@@ -368,9 +336,9 @@ TEST(get_char_from_buffer_test, test_error_buffer_empty_3)
 	ERROR_TYPE_t err = OK;
 	ERROR_TYPE_t res = EMPTY_BUFFER;
 	unsigned char a = 'a';
-	add_char_to_buffer(&b, a, &err);
-	unsigned char tmp = get_char_from_buffer(&b, &err);
-	// change 7 to 255 or a different value 
+	*(b.head) = a;
+	b.head = b.buffer;
+	char tmp = get_char_from_buffer(&b, &err);
 	EXPECT_EQ((int) a, (int)tmp);
 	EXPECT_EQ(res, err); 
 }
@@ -384,9 +352,8 @@ TEST(get_char_from_buffer_test, test_error_pointer_error)
 	b.head +=10;
 	ERROR_TYPE_t err = OK;
 	ERROR_TYPE_t res = POINTER_ERROR;
-	unsigned char tmp = get_char_from_buffer(&b, &err);
-	// change 7 to 255 or a different value 
-	EXPECT_EQ(7, (int)tmp);
+	char tmp = get_char_from_buffer(&b, &err);
+	EXPECT_EQ(-1, (int)tmp);
 	EXPECT_EQ(res, err); 
 
 }
@@ -400,11 +367,11 @@ TEST(print_buffer_test, test_default)
 	//init_buffer(&b, buff);
 	ERROR_TYPE_t err;
 	ERROR_TYPE_t res = OK;
+	*(b.head) = 'H';
+	*(b.head+1) = 'i';
+	b.head += 2;
 
-	add_char_to_buffer(&b, 'H', &err);	
-	add_char_to_buffer(&b, 'i', &err);	
-
-	EXPECT_EQ(2, print_buffer(&b, &err));
+	EXPECT_EQ(2, print_buffer(b, &err));
 	EXPECT_EQ(res, err);
 
 }
@@ -417,27 +384,19 @@ TEST(print_buffer_test, test_border)
 	//init_buffer(&b, buff);
 	ERROR_TYPE_t err;
 	ERROR_TYPE_t res = OK;
+	char hell[] = "Hell";
 
-	add_char_to_buffer(&b, 'H', &err);	
-	add_char_to_buffer(&b, 'e', &err);	
-	add_char_to_buffer(&b, 'l', &err);	
-	add_char_to_buffer(&b, 'l', &err);	
+	for(int i = 0; hell[i] != '\0'; i++)
+	{
+		*(b.head) = hell[i];
+		b.head +=1;
+		if(b.head == (b.buffer + MAX_BUFFER))
+		{
+			b.head = b.buffer;
+		}
+	}
 
-	EXPECT_EQ(4, print_buffer(&b, &err));
-	EXPECT_EQ(res, err);
-
-}
-
-TEST(print_buffer_test, test_is_buffer_empty)
-{
-	b.head = buff;
-	b.tail = buff;
-	b.buffer = buff;
-	//init_buffer(&b, buff);
-	ERROR_TYPE_t err;
-	ERROR_TYPE_t res = EMPTY_BUFFER;
-
-	EXPECT_EQ(-1, print_buffer(&b, &err));
+	EXPECT_EQ(4, print_buffer(b, &err));
 	EXPECT_EQ(res, err);
 
 }
@@ -451,7 +410,7 @@ TEST(print_buffer_test, test_set_buffer_empty)
 	ERROR_TYPE_t err = EMPTY_BUFFER;
 	ERROR_TYPE_t res = EMPTY_BUFFER;
 
-	EXPECT_EQ(-1, print_buffer(&b, &err));
+	EXPECT_EQ(-1, print_buffer(b, &err));
 	EXPECT_EQ(res, err);
 
 }
@@ -470,7 +429,7 @@ TEST(add_string_to_buffer_test, test_OK)
 	EXPECT_EQ(res, err);
 }
 
-TEST(add_string_to_buffer_test, test_buffer_full)
+TEST(add_string_to_buffer_test, test_set_buffer_full)
 {
 	b.head = buff;
 	b.tail = buff;
@@ -485,13 +444,29 @@ TEST(add_string_to_buffer_test, test_buffer_full)
 	EXPECT_EQ(res, err);
 }
 
+TEST(add_string_to_buffer_test, test_buffer_is_full)
+{
+
+	b.tail = buff;
+	b.buffer = buff;
+	b.head = b.buffer + 4;
+	//init_buffer(&b, buff);
+
+	unsigned char test[] = "test";
+	ERROR_TYPE_t err;
+	ERROR_TYPE_t res = BUFFER_OVER_FLOW;
+	int count = add_string_to_buffer(&b, test, &err);
+	EXPECT_EQ(-1, count);
+	EXPECT_EQ(res, err);
+}
+
 TEST(add_string_to_buffer_test, test_buffer_overflow)
 {
 	b.head = buff;
 	b.tail = buff;
 	b.buffer = buff;
 	//init_buffer(&b, buff);
-	unsigned char test [] = "this test will crash the buffer";
+	unsigned char test [] = "this string is way to long";
 	ERROR_TYPE_t err;
 	ERROR_TYPE_t res = BUFFER_OVER_FLOW;
 	int count = add_string_to_buffer(&b, test, &err);
@@ -517,20 +492,26 @@ TEST(add_string_to_buffer_test, test_add_over_border)
 	EXPECT_EQ(res, err);
 }
 
-TEST(get_string_from_buffer_test, test_read_default_3)
+TEST(get_string_from_buffer_test, test_read_default)
 {
 	b.head = buff;
 	b.tail = buff;
 	b.buffer = buff;
 	//init_buffer(&b, buff);
-	ERROR_TYPE_t err;
+	ERROR_TYPE_t err = OK;
 	ERROR_TYPE_t res = OK;
 	int len = 3;
-	add_char_to_buffer(&b, 'H', &err);	
-	add_char_to_buffer(&b, 'e', &err);	
-	add_char_to_buffer(&b, 'y', &err);
+	unsigned char string[] = "Hey";
+	for(int i = 0; i < len; i++)
+	{
+		*(b.head) = string[i];
+		b.head +=1;
+	}
 	unsigned char dest[len];
 	int count = get_string_from_buffer(&b, dest, len, &err);	
+	EXPECT_EQ(len, count);
+	EXPECT_EQ(res, err);
+	EXPECT_STREQ((char*)dest,(char*)string);
 }
 
 TEST(get_string_from_buffer_test, test_read_border)
@@ -542,12 +523,23 @@ TEST(get_string_from_buffer_test, test_read_border)
 	ERROR_TYPE_t err;
 	ERROR_TYPE_t res = OK;
 	int len = 4;
-	add_char_to_buffer(&b, 'H', &err);	
-	add_char_to_buffer(&b, 'e', &err);	
-	add_char_to_buffer(&b, 'l', &err);
-	add_char_to_buffer(&b, 'l', &err);
+	unsigned char string[] = "Hell";
+
+	for(int i = 0; i < len; i++)
+	{
+		*(b.head) = string[i];
+		b.head +=1;
+		if(b.head == (b.buffer + MAX_BUFFER))
+		{
+			b.head = b.buffer;
+		}
+	}
+
 	unsigned char dest[len];
 	int count = get_string_from_buffer(&b, dest, len, &err);	
+	EXPECT_EQ(len, count);
+	EXPECT_EQ(res, err);
+	EXPECT_STREQ((char*)dest,(char*) string);
 }
 
 TEST(get_string_from_buffer_test, test_read_over_border)
@@ -557,17 +549,30 @@ TEST(get_string_from_buffer_test, test_read_over_border)
 	b.buffer = buff;
 	//init_buffer(&b, buff);
 	b.tail += 3;
+	*(b.tail) = 'Z';
 	b.head += 4;
 
 	ERROR_TYPE_t err;
 	ERROR_TYPE_t res = OK;
-	int len = 4;
-	add_char_to_buffer(&b, 'H', &err);	
-	add_char_to_buffer(&b, 'e', &err);	
-	add_char_to_buffer(&b, 'l', &err);
-	add_char_to_buffer(&b, 'l', &err);
+	int len = 3;
+
+	unsigned char string[] = "Hey";
+
+	for(int i = 0; i < len; i++)
+	{
+		*(b.head) = string[i];
+		b.head +=1;
+		if(b.head == (b.buffer + MAX_BUFFER))
+		{
+			b.head = b.buffer;
+		}
+	}
+
 	unsigned char dest[len];
 	int count = get_string_from_buffer(&b, dest, len, &err);	
+	EXPECT_EQ(len, count);
+	EXPECT_EQ(res, err);
+	EXPECT_STREQ((char*)dest, (char*)"ZHe");
 }
 
 TEST(get_string_from_buffer_test, test_pointer_error)
@@ -582,12 +587,12 @@ TEST(get_string_from_buffer_test, test_pointer_error)
 	ERROR_TYPE_t err;
 	ERROR_TYPE_t res = POINTER_ERROR;
 	int len = 4;
-	add_char_to_buffer(&b, 'H', &err);	
-	add_char_to_buffer(&b, 'e', &err);	
-	add_char_to_buffer(&b, 'l', &err);
-	add_char_to_buffer(&b, 'l', &err);
+
 	unsigned char dest[len];
 	int count = get_string_from_buffer(&b, dest, len, &err);	
+	EXPECT_EQ(-1, count);
+	EXPECT_EQ(res, err);
+
 }
 
 TEST(get_string_from_buffer_test, test_empty_buffer)
@@ -600,11 +605,25 @@ TEST(get_string_from_buffer_test, test_empty_buffer)
 	ERROR_TYPE_t err;
 	ERROR_TYPE_t res = EMPTY_BUFFER;
 	int len = 4;
-	add_char_to_buffer(&b, 'H', &err);	
-	add_char_to_buffer(&b, 'e', &err);	
-	add_char_to_buffer(&b, 'l', &err);
-	add_char_to_buffer(&b, 'l', &err);
+	int biggerLen = 6;
+	char string[] = "Hell";
+
+	for(int i = 0; i < len; i++)
+	{
+		*(b.head) = string[i];
+		b.head +=1;
+		if(b.head == (b.buffer + MAX_BUFFER))
+		{
+			b.head = b.buffer;
+		}
+	}
+
 	unsigned char dest[len];
-	int count = get_string_from_buffer(&b, dest, len, &err);	
+	int count = get_string_from_buffer(&b, dest, biggerLen, &err);	
+	EXPECT_EQ(len, count);
+	EXPECT_EQ(res, err);
+	EXPECT_STREQ((char*)dest, (char*)string);
+
+
 }
 

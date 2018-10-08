@@ -4,3 +4,4 @@
 *.odt
 bin/
 *.png
+*.o

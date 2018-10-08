@@ -23,9 +23,9 @@ int get_buffer_state(struct buffer_type *b);
 
 int add_char_to_buffer(struct buffer_type *b, unsigned char a, error_type *err);
 
-unsigned char get_char_from_buffer(struct buffer_type*b, error_type *err);
+char get_char_from_buffer(struct buffer_type*b, error_type *err);
 
-int print_buffer(struct buffer_type *b, error_type *err);
+int print_buffer(struct buffer_type b, error_type *err);
 
 int add_string_to_buffer(struct buffer_type *b, unsigned char *s, error_type *err);
 
