@@ -26,6 +26,7 @@ CPP = g++
 CCFLAGS = -Wall -c 
 CPPFLAGS =
 
+COPTS = -fprofile-arcs -ftest-coverage
 
 # Flags for libs
 LIBFLAGS=
@@ -42,6 +43,13 @@ LIBFLAGS=
 # make test
 test: Gtest_main.o libgtest.a $(UNIT_TEST_NAME).o $(PROGRAM_NAME)_test.o $(BIN_DIR)
 	$(CPP) $(LIBFLAGS) -I $(GTEST_DIR)/include -pthread $(UNIT_TEST_NAME).o Gtest_main.o libgtest.a $(PROGRAM_NAME).o -o $(BIN_DIR)/$(PROGRAM_NAME)_test 
+
+# make coverage test
+
+coverage: Gtest_main.o libgtest.a $(UNIT_TEST_NAME)_coverage.o $(PROGRAM_NAME)_coverage.o $(BIN_DIR)
+	$(CPP) $(COPTS) -I $(GTEST_DIR)/include -pthread $(UNIT_TEST_NAME).o Gtest_main.o libgtest.a $(PROGRAM_NAME).o -o $(BIN_DIR)/$(PROGRAM_NAME)_test 
+	./coverageAnalysis
+
 
 
 ##Normal##
@@ -74,6 +82,15 @@ $(UNIT_TEST_NAME).o: $(UNIT_TEST_NAME).c # $(HEADER_FILE_NAME).h
 $(PROGRAM_NAME)_test.o: $(PROGRAM_NAME).c 
 	$(CPP) $(CCFLAGS) $(PROGRAM_NAME).c
 
+## coverage test
+$(UNIT_TEST_NAME)_coverage.o: $(UNIT_TEST_NAME).c # $(HEADER_FILE_NAME).h
+	$(CPP) -c -isystem $(GTEST_DIR)/include -I$(GTEST_DIR) $(UNIT_TEST_NAME).c
+
+
+$(PROGRAM_NAME)_coverage.o: $(PROGRAM_NAME).c 
+	$(CPP) $(COPTS) $(CCFLAGS) $(PROGRAM_NAME).c
+
+
 
 
 $(BIN_DIR):
@@ -84,5 +101,6 @@ $(BIN_DIR):
 clean:
 	rm -f *.o
 	rm -rf $(BIN_DIR)
-
-
+	rm -f *.gcno
+	rm -rf cov_output
+	rm -f *.gcda

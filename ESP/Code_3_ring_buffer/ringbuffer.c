@@ -52,10 +52,6 @@ int add_char_to_buffer(struct buffer_type *b, unsigned char a , error_type *err)
 		*err = BUFFER_FULL;
 		return -1;
 	} 
-	if(*err == BUFFER_FULL)
-	{
-		return -1;
-	}
 	if(a == '\0')
 	{
 		return get_buffer_state(b);
@@ -75,7 +71,6 @@ int add_char_to_buffer(struct buffer_type *b, unsigned char a , error_type *err)
 	{
 		*err = BUFFER_FULL;
 	} 
-
 	return get_buffer_state(b);
 }
 
@@ -90,10 +85,6 @@ char get_char_from_buffer(struct buffer_type*b, error_type *err)
 	if(b->tail == b->head)
 	{
 		*err = EMPTY_BUFFER;
-		return rw;
-	}
-	if(*err == EMPTY_BUFFER)
-	{
 		return rw;
 	}
 
@@ -127,27 +118,26 @@ int print_buffer(struct buffer_type b, error_type *err)
 		*err = EMPTY_BUFFER;
 		return -1;
 	}
-	if(*err == EMPTY_BUFFER)
-	{
-		return -1;
-	}
 
 
 	unsigned char *tmp = b.tail;
 	int i =0; 
-	while(tmp+i != b.head)
+	int count = 0;
+	while(tmp + i != b.head)
 	{
-		printf("%c", *(b.tail+i));
+		printf("%c", *(tmp+i));
 		i++;
-		if(tmp+i - b.buffer > MAX_BUFFER-1)
+		if(tmp+i  == (b.buffer + MAX_BUFFER))
 		{
 			tmp = b.buffer;
+			i = 0;
 		}
+	count ++;
 	}
 
 
 	*err = OK;
-	return i;
+	return count;
 }
 
 int add_string_to_buffer(struct buffer_type *b, unsigned char *s, error_type *err)
@@ -155,6 +145,11 @@ int add_string_to_buffer(struct buffer_type *b, unsigned char *s, error_type *er
 	int i;
 	for(i = 0; s[i] != '\0'; i++){}
 	int state = get_buffer_state(b);
+	if(state == -1)
+	{
+	*err = POINTER_ERROR;
+	return -1;
+}
 	if(MAX_BUFFER-1 - state < i )
 	{	
 		*err = BUFFER_OVER_FLOW;
@@ -166,25 +161,12 @@ int add_string_to_buffer(struct buffer_type *b, unsigned char *s, error_type *er
 		add_char_to_buffer(b,s[a] ,err);
 		a++;
 	}
-	if(*err == OK)
-	{
-		return a;
-	}
-	if(*err == POINTER_ERROR)
-	{
-		return -1;
-	}
 	if(*err == BUFFER_FULL && s[a] == '\0')
 	{
 		return a;
 	}
-	/*	if(*err == BUFFER_FULL && s[a] != '\0')
-		{
-	 *err = BUFFER_OVER_FLOW;
+	return a;
 
-	 }
-	 */
-	return -1;
 }
 
 int get_string_from_buffer(struct buffer_type *b, unsigned char *dest, int len, error_type *err)
