@@ -6,5 +6,5 @@ bin/
 *.png
 *.o
 cov_output
-.gcda
-.gcno
+*.gcda
+*.gcno
