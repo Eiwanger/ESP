@@ -5,7 +5,6 @@
 
 unsigned char buff[MAX_BUFFER];
 struct buffer_type b;
-struct buffer_type n;
 
 TEST(init_buffer_test, test_OK)
 {
@@ -208,16 +207,6 @@ TEST(add_char_to_buffer_test, test_pointer_error)
 	EXPECT_EQ(res, err);	
 }
 
-TEST(add_char_to_buffer_test, test_null)
-{
-	ERROR_TYPE_t err;
-	ERROR_TYPE_t res = POINTER_ERROR;
-	unsigned char getAdded = 'a';
-	int count = add_char_to_buffer(&n, getAdded, &err);	
-	EXPECT_EQ(-1, count);
-	EXPECT_EQ(res, err);	
-}
-
 TEST(add_char_to_bufferTest, test_error_buffer_circle_full) {
 	b.head = buff+4;
 	*(b.head-1) = 'u';
@@ -384,7 +373,6 @@ TEST(get_char_from_buffer_test, test_error_pointer_error)
 	char tmp = get_char_from_buffer(&b, &err);
 	EXPECT_EQ(-1, (int)tmp);
 	EXPECT_EQ(res, err); 
-
 }
 
 

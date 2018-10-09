@@ -37,7 +37,7 @@ int get_buffer_state(struct buffer_type *b)
 
 int add_char_to_buffer(struct buffer_type *b, unsigned char a , error_type *err)
 {
-	if(b == NULL || get_buffer_state(b) == -1)
+	if(get_buffer_state(b) == -1)
 	{
 		*err = POINTER_ERROR;
 		return -1;
@@ -77,7 +77,7 @@ int add_char_to_buffer(struct buffer_type *b, unsigned char a , error_type *err)
 char get_char_from_buffer(struct buffer_type*b, error_type *err)
 {
 	unsigned char rw = -1;
-	if(b == NULL || get_buffer_state(b) == -1)
+	if(get_buffer_state(b) == -1)
 	{
 		*err = POINTER_ERROR;
 		return rw;
@@ -157,7 +157,7 @@ int add_string_to_buffer(struct buffer_type *b, unsigned char *s, error_type *er
 		add_char_to_buffer(b,s[a] ,err);
 		a++;
 	}
-	if(*err == BUFFER_FULL && s[a] == '\0')
+	if(*err == BUFFER_FULL/* && s[a] == '\0'*/)
 	{
 		return a;
 	}
@@ -169,23 +169,22 @@ int add_string_to_buffer(struct buffer_type *b, unsigned char *s, error_type *er
 int get_string_from_buffer(struct buffer_type *b, unsigned char *dest, int len, error_type *err)
 {
 	int i = 0;
-
 	while(i < len)
 	{
-		if(*err != EMPTY_BUFFER && *err != POINTER_ERROR)
+		if(*err != EMPTY_BUFFER)
 		{
 			dest[i]= get_char_from_buffer(b, err);
 			i++;
-		}else{
-			if(*err == EMPTY_BUFFER)
-			{
-				dest[i] = '\0';
-				return i;
-			}
 			if(*err == POINTER_ERROR)
 			{
 				return -1;
 			}
+		}else{
+			
+				dest[i] = '\0';
+				return i;
+			
+
 		}
 	}
 	dest[i] = '\0';
