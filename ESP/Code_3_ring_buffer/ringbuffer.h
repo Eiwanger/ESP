@@ -19,7 +19,8 @@ void init_buffer(struct buffer_type *b, unsigned char *buffer);
 
 error_type empty_buffer(struct buffer_type *b);
 
-int get_buffer_state(struct buffer_type *b);
+//int get_buffer_state(struct buffer_type *b);
+int get_buffer_state(struct buffer_type *b, error_type *err);
 
 int add_char_to_buffer(struct buffer_type *b, unsigned char a, error_type *err);
 

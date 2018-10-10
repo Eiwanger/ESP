@@ -1,4 +1,4 @@
-
+// MAX_BUFFER declared in ringbuffer.h with 5
 #include "ringbuffer.h"
 #include <gtest/gtest.h>
 #include <stdlib.h>
@@ -44,41 +44,31 @@ TEST(get_buffer_state_test, test_empty)
 	b.head = buff;
 	b.tail = buff;
 	b.buffer = buff;
+	ERROR_TYPE_t err;
 	//init_buffer(&b, buff);
-	EXPECT_EQ(0, get_buffer_state(&b));
+	EXPECT_EQ(0, get_buffer_state(&b, &err));
 }
 
-TEST(get_buffer_state_test, test_head_after_tail)
+TEST(get_buffer_state_test, test_different_pos)
 {
 	b.head = buff;
 	b.tail = buff;
 	b.buffer = buff;
+	ERROR_TYPE_t err;
 	//init_buffer(&b, buff);
 	b.head +=3;
 	b.tail +=1;	
-	EXPECT_EQ(2, get_buffer_state(&b));
-}
+	EXPECT_EQ(2, get_buffer_state(&b, &err));
 
-TEST(get_buffer_state_test, test_head_before_tail)
-{
-	b.head = buff;
-	b.tail = buff;
-	b.buffer = buff;
-	//init_buffer(&b, buff);
-	b.head +=1;
-	b.tail +=3;	
-	EXPECT_EQ(3, get_buffer_state(&b));
-}
+	b.head = buff+1;
+	b.tail = buff+3;
+	EXPECT_EQ(3, get_buffer_state(&b, &err));
 
-TEST(get_buffer_state_test, test_border_top)
-{
-	b.head = buff;
-	b.tail = buff;
-	b.buffer = buff;
-	//init_buffer(&b, buff);
-	b.head +=4;
-	b.tail +=1;	
-	EXPECT_EQ(3, get_buffer_state(&b));
+	b.head = buff + 4;
+	b.tail = buff +1;
+	EXPECT_EQ(3, get_buffer_state(&b, &err));
+
+
 }
 
 TEST(get_buffer_state_test, test_out_of_bounds_head)
@@ -86,10 +76,11 @@ TEST(get_buffer_state_test, test_out_of_bounds_head)
 	b.head = buff;
 	b.tail = buff;
 	b.buffer = buff;
+	ERROR_TYPE_t err;
 	//init_buffer(&b, buff);
 	b.head +=5;
 	b.tail +=1;	
-	EXPECT_EQ(-1, get_buffer_state(&b));
+	EXPECT_EQ(-1, get_buffer_state(&b, &err));
 
 }
 
@@ -98,10 +89,11 @@ TEST(get_buffer_state_test, test_out_of_bounds_tail)
 	b.head = buff;
 	b.tail = buff;
 	b.buffer = buff;
+	ERROR_TYPE_t err;
 	//init_buffer(&b, buff);
 	b.head +=1;
 	b.tail +=5;	
-	EXPECT_EQ(-1, get_buffer_state(&b));
+	EXPECT_EQ(-1, get_buffer_state(&b, &err));
 
 }
 
@@ -110,10 +102,11 @@ TEST(get_buffer_state_test, test_out_of_bounds_tail_negativ)
 	b.head = buff;
 	b.tail = buff;
 	b.buffer = buff;
+	ERROR_TYPE_t err;
 	//init_buffer(&b, buff);
 	b.head +=2;
 	b.tail +=-1;	
-	EXPECT_EQ(-1, get_buffer_state(&b));
+	EXPECT_EQ(-1, get_buffer_state(&b, &err));
 
 }
 
@@ -122,10 +115,11 @@ TEST(get_buffer_state_test, test_out_of_bounds_head_negativ)
 	b.head = buff;
 	b.tail = buff;
 	b.buffer = buff;
+	ERROR_TYPE_t err;
 	//init_buffer(&b, buff);
 	b.head +=-2;
 	b.tail +=2;	
-	EXPECT_EQ(-1, get_buffer_state(&b));
+	EXPECT_EQ(-1, get_buffer_state(&b, &err));
 
 }
 
@@ -486,6 +480,26 @@ TEST(add_string_to_buffer_test, test_OK)
 	EXPECT_EQ(res, err);
 }
 
+TEST(add_string_to_buffer_test, test_special_letters)
+{
+	b.head = buff;
+	b.tail = buff;
+	b.buffer = buff;
+	//init_buffer(&b, buff);
+	unsigned char test[] = "?-+";
+	ERROR_TYPE_t err;
+	ERROR_TYPE_t res = OK;
+	int count = add_string_to_buffer(&b, test, &err);
+	EXPECT_EQ(3, count);
+	EXPECT_EQ(res, err);
+	unsigned char result[4];
+	result[0] = *(b.head - 3);
+	result[1] = *(b.head - 2);
+	result[2] = *(b.head - 1);
+	result[3] = '\0';
+	EXPECT_STREQ((char*)result, (char*)test);
+}
+
 TEST(add_string_to_buffer_test, test_buffer_becomes_full)
 {
 	b.head = buff;
@@ -688,7 +702,7 @@ TEST(get_string_from_buffer_test, test_pointer_error)
 
 }
 
-TEST(get_string_from_buffer_test, test_empty_buffer)
+TEST(get_string_from_buffer_test, test_buffer_empty_after_use)
 {
 	b.head = buff;
 	b.tail = buff;
@@ -720,3 +734,22 @@ TEST(get_string_from_buffer_test, test_empty_buffer)
 
 }
 
+TEST(get_string_from_buffer_test, test_buffer_empty_initalised)
+{
+	b.head = buff;
+	b.tail = buff;
+	b.buffer = buff;
+	//init_buffer(&b, buff);
+
+	ERROR_TYPE_t err;
+	ERROR_TYPE_t res = EMPTY_BUFFER;
+	int len = 4;
+	unsigned char string[] ="";
+	unsigned char dest[len];
+	int count = get_string_from_buffer(&b, dest, len, &err);	
+	EXPECT_EQ(0, count);
+	EXPECT_EQ(res, err);
+	EXPECT_STREQ((char*)dest, (char*)string);
+
+
+}
