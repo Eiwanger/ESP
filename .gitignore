@@ -8,3 +8,4 @@ bin/
 cov_output
 *.gcda
 *.gcno
+*.zip

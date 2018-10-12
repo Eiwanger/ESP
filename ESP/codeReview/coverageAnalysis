@@ -1,5 +1,5 @@
 
-bin/ringbuffer_coverage_test
+bin/ringbuffer_test
 export COV_OUTPUT=./cov_output
 lcov -rc lcov_branch_coverage=1 -c -i -d . -o .coverage.base
 lcov -rc lcov_branch_coverage=1 -c -d . -o .coverage.run

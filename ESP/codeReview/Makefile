@@ -24,7 +24,7 @@ CPP = g++
 
 #Flags for the compiler to create .o files
 CCFLAGS = -Wall -c 
-CPPFLAGS =
+CPPFLAGS = -Wall 
 
 COPTS = -fprofile-arcs -ftest-coverage
 
@@ -47,7 +47,7 @@ test: Gtest_main.o libgtest.a $(UNIT_TEST_NAME).o $(PROGRAM_NAME)_test.o $(BIN_D
 # make coverage test
 
 coverage: Gtest_main.o libgtest.a $(UNIT_TEST_NAME)_coverage.o $(PROGRAM_NAME)_coverage.o $(BIN_DIR)
-	$(CPP) $(COPTS) -I $(GTEST_DIR)/include -pthread $(UNIT_TEST_NAME)_coverage.o Gtest_main.o libgtest.a $(PROGRAM_NAME)_coverage.o -o $(BIN_DIR)/$(PROGRAM_NAME)_coverage_test 
+	$(CPP) $(COPTS) -I $(GTEST_DIR)/include -pthread $(UNIT_TEST_NAME).o Gtest_main.o libgtest.a $(PROGRAM_NAME).o -o $(BIN_DIR)/$(PROGRAM_NAME)_test 
 	./coverageAnalysis
 
 
@@ -76,7 +76,7 @@ libgtest.a:
 
 ## own Unit test code
 $(UNIT_TEST_NAME).o: $(UNIT_TEST_NAME).c # $(HEADER_FILE_NAME).h
-	$(CPP) -c -isystem $(GTEST_DIR)/include -I$(GTEST_DIR) $(UNIT_TEST_NAME).c
+	$(CPP) -c -Wall -isystem $(GTEST_DIR)/include -I$(GTEST_DIR) $(UNIT_TEST_NAME).c
 
 
 $(PROGRAM_NAME)_test.o: $(PROGRAM_NAME).c 
@@ -84,11 +84,11 @@ $(PROGRAM_NAME)_test.o: $(PROGRAM_NAME).c
 
 ## coverage test
 $(UNIT_TEST_NAME)_coverage.o: $(UNIT_TEST_NAME).c # $(HEADER_FILE_NAME).h
-	$(CPP) -c -isystem $(GTEST_DIR)/include -I$(GTEST_DIR) $(UNIT_TEST_NAME).c -o $(UNIT_TEST_NAME)_coverage.o
+	$(CPP) -c -isystem $(GTEST_DIR)/include -I$(GTEST_DIR) $(UNIT_TEST_NAME).c
 
 
 $(PROGRAM_NAME)_coverage.o: $(PROGRAM_NAME).c 
-	$(CPP) $(COPTS) $(CCFLAGS) $(PROGRAM_NAME).c -o $(PROGRAM_NAME)_coverage.o
+	$(CPP) $(COPTS) $(CCFLAGS) $(PROGRAM_NAME).c
 
 
 
