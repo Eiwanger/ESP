@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
+// initializes the buffer, by placing the pointers to beginning of buffer
 void init_buffer(struct buffer_type *b, unsigned char *buffer)
 {
 	b->head = buffer;
@@ -10,32 +10,21 @@ void init_buffer(struct buffer_type *b, unsigned char *buffer)
 	b->buffer = buffer;
 }
 
+// Empties the buffer by moving tail to head
 error_type empty_buffer(struct buffer_type *b)
 {
 	b->tail = b-> head;
 	return OK;
 }
 /*
-int get_buffer_state(struct buffer_type *b)
-{
-	int count = 0;
-	if(b->buffer-b->tail > 0 || b->buffer - b->head > 0
-			|| b->head - b->buffer > MAX_BUFFER-1 || b->tail - b->buffer > MAX_BUFFER-1)
-	{
-		return -1;
-	}
-
-
-	count = b->head - b->tail;	
-	// if negativ then tail > head
-	if(count < 0)
-	{
-		count =MAX_BUFFER + count;
-	}
-	return count;
-}
+######################################################
+ new get buffer state function
+ the old code starts at line 200
+######################################################
 */
-// new get buffer state function
+
+// Checks the status of buffer and returns 
+// amount of characters in buffer and -1 in an error condition
 int get_buffer_state(struct buffer_type *b, error_type *err)
 {
 	int count = 0;
@@ -68,6 +57,7 @@ int get_buffer_state(struct buffer_type *b, error_type *err)
 	return count;
 }
 
+// add one character to buffer and return amount of character in buffer
 int add_char_to_buffer(struct buffer_type *b, unsigned char a , error_type *err)
 {
 	if(get_buffer_state(b, err) == -1)
@@ -92,7 +82,7 @@ int add_char_to_buffer(struct buffer_type *b, unsigned char a , error_type *err)
 	return get_buffer_state(b, err);
 }
 
-
+// return one char from the buffer
 char get_char_from_buffer(struct buffer_type*b, error_type *err)
 {
 	if(get_buffer_state(b, err) == -1)
@@ -120,6 +110,7 @@ char get_char_from_buffer(struct buffer_type*b, error_type *err)
 	return result;
 }
 
+// prints the buffer without moving the pointers
 int print_buffer(struct buffer_type b, error_type *err)
 {
 	if(get_buffer_state(&b, err) == -1)
@@ -153,7 +144,9 @@ int print_buffer(struct buffer_type b, error_type *err)
 	return count;
 }
 
-
+// add a string to the buffer and return the amount of added characters
+// return -1 with BUFFER_OVER_FLOW if not all character could be added
+// the buffer remains then unchanged
 int add_string_to_buffer(struct buffer_type *b, unsigned char *s, error_type *err)
 {
 	int i;
@@ -184,6 +177,7 @@ int add_string_to_buffer(struct buffer_type *b, unsigned char *s, error_type *er
 
 }
 
+// get a amount of character from the buffer and returns the read amount
 int get_string_from_buffer(struct buffer_type *b, unsigned char *dest, int len, error_type *err)
 {
 	int i = 0;
@@ -214,6 +208,27 @@ int get_string_from_buffer(struct buffer_type *b, unsigned char *dest, int len, 
 
 // here starts the old code with getbufferstate struct
 /*
+
+int get_buffer_state(struct buffer_type *b)
+{
+	int count = 0;
+	if(b->buffer-b->tail > 0 || b->buffer - b->head > 0
+			|| b->head - b->buffer > MAX_BUFFER-1 || b->tail - b->buffer > MAX_BUFFER-1)
+	{
+		return -1;
+	}
+
+
+	count = b->head - b->tail;	
+	// if negativ then tail > head
+	if(count < 0)
+	{
+		count =MAX_BUFFER + count;
+	}
+	return count;
+}
+
+
    int add_char_to_buffer(struct buffer_type *b, unsigned char a , error_type *err)
    {
    if(get_buffer_state(b) == -1)
