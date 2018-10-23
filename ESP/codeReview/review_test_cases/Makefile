@@ -3,30 +3,30 @@
 # make clean -  to clean up
 
 # put here the names of your files
-PROGRAM_NAME = ringbuffer
-UNIT_TEST_NAME = $(PROGRAM_NAME)_test_case
-HEADER_FILE_NAME = ringbuffer
+PROGRAM_NAME=ringbuffer
+UNIT_TEST_NAME=$(PROGRAM_NAME)_test_case
+HEADER_FILE_NAME=ringbuffer
 
 
 
 #Targetfolder
-BIN_DIR = bin
-MK_DIR = mkdir
+BIN_DIR=bin
+MK_DIR=mkdir
 
 
 # variable to find the test environment
-GTEST_DIR =${HOME}/Studium/WS18_fin/prg_c/ESP/googletest/googletest
+GTEST_DIR=${HOME}/Studium/WS18_fin/prg_c/ESP/googletest/googletest
 
 #Compiler
-CC = gcc
-CPP = g++
+CC=gcc
+CPP=g++
 
 
 #Flags for the compiler to create .o files
-CCFLAGS = -Wall -c 
-CPPFLAGS =
+CCFLAGS= -Wall -c 
+CPPFLAGS= -Wall 
 
-COPTS = -fprofile-arcs -ftest-coverage
+COPTS= -fprofile-arcs -ftest-coverage
 
 # Flags for libs
 LIBFLAGS=
@@ -47,7 +47,7 @@ test: Gtest_main.o libgtest.a $(UNIT_TEST_NAME).o $(PROGRAM_NAME)_test.o $(BIN_D
 # make coverage test
 
 coverage: Gtest_main.o libgtest.a $(UNIT_TEST_NAME)_coverage.o $(PROGRAM_NAME)_coverage.o $(BIN_DIR)
-	$(CPP) $(COPTS) -I $(GTEST_DIR)/include -pthread $(UNIT_TEST_NAME)_coverage.o Gtest_main.o libgtest.a $(PROGRAM_NAME)_coverage.o -o $(BIN_DIR)/$(PROGRAM_NAME)_coverage_test 
+	$(CPP) $(COPTS) -I $(GTEST_DIR)/include -pthread $(UNIT_TEST_NAME).o Gtest_main.o libgtest.a $(PROGRAM_NAME).o -o $(BIN_DIR)/$(PROGRAM_NAME)_test 
 	./coverageAnalysis
 
 
@@ -76,7 +76,7 @@ libgtest.a:
 
 ## own Unit test code
 $(UNIT_TEST_NAME).o: $(UNIT_TEST_NAME).c # $(HEADER_FILE_NAME).h
-	$(CPP) -c -isystem $(GTEST_DIR)/include -I$(GTEST_DIR) $(UNIT_TEST_NAME).c
+	$(CPP) -c -Wall -isystem $(GTEST_DIR)/include -I$(GTEST_DIR) $(UNIT_TEST_NAME).c
 
 
 $(PROGRAM_NAME)_test.o: $(PROGRAM_NAME).c 
@@ -84,11 +84,11 @@ $(PROGRAM_NAME)_test.o: $(PROGRAM_NAME).c
 
 ## coverage test
 $(UNIT_TEST_NAME)_coverage.o: $(UNIT_TEST_NAME).c # $(HEADER_FILE_NAME).h
-	$(CPP) -c -isystem $(GTEST_DIR)/include -I$(GTEST_DIR) $(UNIT_TEST_NAME).c -o $(UNIT_TEST_NAME)_coverage.o
+	$(CPP) -c -isystem $(GTEST_DIR)/include -I$(GTEST_DIR) $(UNIT_TEST_NAME).c
 
 
 $(PROGRAM_NAME)_coverage.o: $(PROGRAM_NAME).c 
-	$(CPP) $(COPTS) $(CCFLAGS) $(PROGRAM_NAME).c -o $(PROGRAM_NAME)_coverage.o
+	$(CPP) $(COPTS) $(CCFLAGS) $(PROGRAM_NAME).c
 
 
 

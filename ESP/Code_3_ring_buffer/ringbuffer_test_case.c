@@ -11,9 +11,10 @@ struct buffer_type b;
    ----------------------------------------------------
    MAX_BUFFER declared in ringbuffer.h with 5
    enum error_type declared in ringbuffer.h with typedef ERROR_TYPE_t
-   test are adjustet to the declared MAX_BUFFER size of 5
+   test are adjustet to the declared MAX_BUFFER size of at least 5
    ----------------------------------------------------
  */
+
 
 // remove commed to use ERROR_TYPE_t in ringbuffer_test_case.c
 /*
@@ -97,21 +98,21 @@ TEST(get_buffer_state_test, test_different_pos)
 	ERROR_TYPE_t err;
 	ERROR_TYPE_t res = OK;
 	//init_buffer(&b, buff);
-	b.head +=3;
-	b.tail +=1;	
+	b.head += MAX_BUFFER - 2;
+	b.tail += MAX_BUFFER - 4;	
 	EXPECT_EQ(2, get_buffer_state(&b, &err));
 	EXPECT_EQ(err, res);
 
-	b.head = buff+1;
-	b.tail = buff+3;
-	EXPECT_EQ(3, get_buffer_state(&b, &err));
+	b.head =buff + 1;
+	b.tail =buff + MAX_BUFFER - 2;
+	int exp = MAX_BUFFER-2;
+	EXPECT_EQ(exp, get_buffer_state(&b, &err));
 	EXPECT_EQ(err, res);
 
-	b.head = buff + 4;
-	b.tail = buff +1;
-	EXPECT_EQ(3, get_buffer_state(&b, &err));
+	b.head =buff + MAX_BUFFER - 1;
+	b.tail =buff + 1;
+	EXPECT_EQ(exp, get_buffer_state(&b, &err));
 	EXPECT_EQ(err, res);
-
 
 }
 
@@ -294,9 +295,10 @@ TEST(add_char_to_bufferTest, test_add_empty)
 	b.buffer = buff;
 	//init_buffer(&b, buff);
 	ERROR_TYPE_t err;
-	ERROR_TYPE_t res; 
+	ERROR_TYPE_t res = OK; 
 	int count = add_char_to_buffer(&b, '\0',  &err);
 	EXPECT_EQ(3, count);
+	EXPECT_EQ(err, res);
 }
 
 // ##################################
@@ -537,7 +539,7 @@ TEST(print_buffer_test, test_border)
 	b.buffer = buff;
 	//init_buffer(&b, buff);
 	ERROR_TYPE_t err;
-	ERROR_TYPE_t res = OK;
+	ERROR_TYPE_t res = BUFFER_FULL;
 	char hell[] = "Hell";
 
 	for(int i = 0; hell[i] != '\0'; i++)
@@ -562,7 +564,7 @@ TEST(print_buffer_test, test_over_border)
 	b.buffer = buff;
 	//init_buffer(&b, buff);
 	ERROR_TYPE_t err;
-	ERROR_TYPE_t res = OK;
+	ERROR_TYPE_t res = BUFFER_FULL;
 	char hell[] = "Hell";
 
 	for(int i = 0; hell[i] != '\0'; i++)

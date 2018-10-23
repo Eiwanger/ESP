@@ -104,3 +104,4 @@ clean:
 	rm -f *.gcno
 	rm -rf cov_output
 	rm -f *.gcda
+	ls -lt

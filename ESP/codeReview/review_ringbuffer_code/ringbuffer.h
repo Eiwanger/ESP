@@ -1,4 +1,4 @@
-#define MAX_BUFFER 5 
+#define MAX_BUFFER 25 
 
 // define the error type with a typedef 
 typedef enum error_type{
