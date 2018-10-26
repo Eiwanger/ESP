@@ -635,6 +635,207 @@ i = delete_from_list(head, 0);
 
 
 /***************************************************************************/
+/*                 Test for empty_list                                     */
+/***************************************************************************/
+// test empty_list without expected errors
+TEST(empty_list_test,test_normal)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	char str2[10]="first";
+	char str3[10]="second";
+	char str4[10]="third";
+	char str5[10]="fourth";
+	char str6[10]="fifth";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->index=4;
+	head->next->next->next->next->data=str4;
+	head->next->next->next->next->next = NULL;
+
+	// check if str2 is on pos index 2
+	EXPECT_STREQ(head->next->next->data,str2);
+
+	i = delete_from_list(head,400);
+	// after deleting index 2, str3 should now be on the pos of index 2
+	EXPECT_EQ(i,-1);
+}
+
+
+
+/***************************************************************************/
+
+
+/***************************************************************************/
+/*                 Test for swap_items                                     */
+/***************************************************************************/
+// test swap_items without expecting errors
+TEST(swap_items_test,test_normal)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	char str2[10]="first";
+	char str3[10]="second";
+	char str4[10]="third";
+	char str5[10]="fourth";
+	char str6[10]="fifth";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->index=4;
+	head->next->next->next->next->data=str4;
+	head->next->next->next->next->next = NULL;
+
+	// check if str2 is on pos index 2
+	EXPECT_STREQ(head->next->next->data,str2);
+
+	i = delete_from_list(head,400);
+	// after deleting index 2, str3 should now be on the pos of index 2
+	EXPECT_EQ(i,-1);
+}
+
+
+
+/***************************************************************************/
+
+
+/***************************************************************************/
+/*                 Test for sort_list                                      */
+/***************************************************************************/
+// test sort_list without expecting errors
+TEST(sort_list_test,test_normal)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	char str2[10]="first";
+	char str3[10]="second";
+	char str4[10]="third";
+	char str5[10]="fourth";
+	char str6[10]="fifth";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->index=4;
+	head->next->next->next->next->data=str4;
+	head->next->next->next->next->next = NULL;
+
+	// check if str2 is on pos index 2
+	EXPECT_STREQ(head->next->next->data,str2);
+
+	i = delete_from_list(head,400);
+	// after deleting index 2, str3 should now be on the pos of index 2
+	EXPECT_EQ(i,-1);
+}
+
+
+
+/***************************************************************************/
+
+
+/***************************************************************************/
+/*                 Test for linkedlist_status                              */
+/***************************************************************************/
+// test linkedlist_status without expecting errors
+TEST(linkedlist_status_test,test_normal)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	char str2[10]="first";
+	char str3[10]="second";
+	char str4[10]="third";
+	char str5[10]="fourth";
+	char str6[10]="fifth";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->index=4;
+	head->next->next->next->next->data=str4;
+	head->next->next->next->next->next = NULL;
+
+	// check if str2 is on pos index 2
+	EXPECT_STREQ(head->next->next->data,str2);
+
+	i = delete_from_list(head,400);
+	// after deleting index 2, str3 should now be on the pos of index 2
+	EXPECT_EQ(i,-1);
+}
+
+
+
+/***************************************************************************/
+
+
+
+/***************************************************************************/
 /*                 Test for combined functions                             */
 /***************************************************************************/
 

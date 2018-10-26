@@ -173,3 +173,30 @@ int delete_from_list(linked_list *ll, int index)
 	// we didn't find the index, bail out with -1
 	return -1;
 }
+
+// remove all itmes from the list and will free allocated memory
+// return value items deleted from list
+int empty_list(linked_list *ll)
+{
+return 0;
+}
+
+// swap order of two items
+// return value 0 if ok, -1 if either item was not in the list(content of the list did not chagne)
+int swap_items(linked_list *f, linked_list *s)
+{
+return 0;
+}
+
+// sort list in rising oder based on data
+int sort_list(linked_list*ll)
+{
+return 0;
+}
+
+// will count the number of elements in the list
+// return value: amount
+int linkedlist_status(linked_list *ll)
+{
+return 0;
+}
