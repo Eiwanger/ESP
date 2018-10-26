@@ -23,8 +23,8 @@ CPP =g++
 
 
 #Flags for the compiler to create .o files
-CCFLAGS = -Wall -c 
-CPPFLAGS =
+CCFLAGS = -Wall -c -g
+CPPFLAGS = -g
 
 COPTS = -fprofile-arcs -ftest-coverage
 
@@ -42,8 +42,8 @@ LIBFLAGS=
 
 # make test
 test: Gtest_main.o libgtest.a $(UNIT_TEST_NAME).o $(PROGRAM_NAME)_test.o $(BIN_DIR)
-	$(CPP) -I $(GTEST_DIR)/include -pthread $(UNIT_TEST_NAME).o Gtest_main.o libgtest.a $(PROGRAM_NAME)_test.o -o $(BIN_DIR)/unit_test 
-
+	$(CPP) -I $(GTEST_DIR)/include -pthread $(UNIT_TEST_NAME).o Gtest_main.o libgtest.a $(PROGRAM_NAME)_test.o $(CPPFLAGS) -o $(BIN_DIR)/unit_test 
+	./bin/unit_test
 # make coverage test
 
 coverage: Gtest_main.o libgtest.a $(UNIT_TEST_NAME)_coverage.o $(PROGRAM_NAME)_coverage.o $(BIN_DIR)
