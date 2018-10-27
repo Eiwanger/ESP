@@ -20,11 +20,11 @@ before_install:
  - sudo mv libg* /usr/lib/
  - which valgrind
  - cd "${TRAVIS_BUILD_DIR}"
-
+ - cd ESP/Code_4_linked_list/
 before_script:
     - make test
 script:
-    - ./test
+    - ./unit_test
 branches:
   only:
     - master
