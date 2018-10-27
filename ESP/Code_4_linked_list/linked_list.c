@@ -44,7 +44,7 @@ int add_to_list(linked_list *ll, char*s)
 }
 
 
-// int displays the required element 
+// displays the required element 
 // (pointed by parameter linked_list *ll) in a list
 // Return: -1 if element was not found else 0 ok
 int display_item(linked_list *ll)
@@ -58,7 +58,7 @@ int display_item(linked_list *ll)
 	// print data in a seperated lien
 	printf("\n%s\n", ll->data);
 
-	return ll->index;
+	return 0;
 }
 
 
@@ -84,7 +84,7 @@ int display_list(linked_list *ll)
 	}
 	printf("\n----------------------------------\n");
 
-	return tmp->index;
+	return tmp->index + 1;
 
 }
 
@@ -134,15 +134,19 @@ int delete_from_list(linked_list *ll, int index)
 {
 	linked_list *last;
 	// return -1 if list doesn't exist or is empty
-	if(ll == NULL || ll->next == NULL)
+	// or someone tries to remove the head which is not possible without a 
+	// diffrent return type or parametertype of linked_list**
+	if(ll == NULL || index == 0)
 	{
 		return -1;
 	}
 
+
+	last = ll;
 	while(ll->next != NULL)
 	{
 		if(ll->index == index)
-		{
+		{	
 			last ->next = ll->next;
 			free(ll);
 			ll = last->next;
@@ -155,8 +159,8 @@ int delete_from_list(linked_list *ll, int index)
 			// don't forget the last one
 			ll->index = last -> index + 1;
 			// list got new indexes
-			// return the end index
-			return ll -> index; 
+			// return the end index +1 (don't forget the value at 0)
+			return ll -> index + 1; 
 		}
 		last = ll;
 		ll = ll->next;
@@ -167,36 +171,115 @@ int delete_from_list(linked_list *ll, int index)
 	{
 		last -> next = NULL;
 		free(ll);
-		return last->index;
+		return last->index + 1;
 	}
 
 	// we didn't find the index, bail out with -1
 	return -1;
 }
 
-// remove all itmes from the list and will free allocated memory
+// remove all items from the list and will free allocated memory
 // return value items deleted from list
 int empty_list(linked_list *ll)
 {
-return 0;
+	linked_list *tmp;
+	linked_list *last;
+	int last_index;
+	int i;
+	// list does not exist
+	if(ll == NULL)
+	{
+		return -1;
+	}
+
+	//first count items in list
+	tmp = ll;
+	while(tmp->next != NULL)
+	{
+		tmp = tmp->next;
+	}
+	// now we are at the last position
+	last_index = tmp->index;
+
+	i = last_index;
+	// check if the first element is null, if not delete it
+	while(ll->next != NULL)
+	{
+		tmp = ll;
+		last = ll; // in case we only have 1 element
+
+		// start at the end and delete every item
+		while(tmp->next != NULL)
+		{
+			last = tmp;
+			tmp = tmp->next;
+
+		}
+		free(tmp);
+		last->next = NULL;
+
+	}
+	// there is still the head left, but like in delete_from_list 
+	// it is not possible for me to delete it 
+
+	// on index 0 we also store something, so index+1 is our itemcount	
+	return last_index + 1;
+
 }
+
 
 // swap order of two items
 // return value 0 if ok, -1 if either item was not in the list(content of the list did not chagne)
 int swap_items(linked_list *f, linked_list *s)
 {
-return 0;
+	char* tmp_f;
+
+	// check if s and f exist
+	if(f == NULL || s == NULL)
+	{
+		return -1;
+	}
+
+	// save the data in the temporary string
+	tmp_f = f -> data;
+	
+// swap the data
+	f->data = s->data;
+	s->data = tmp_f;
+
+	return 0;
 }
 
-// sort list in rising oder based on data
+// sort list in rising order based on data
 int sort_list(linked_list*ll)
 {
-return 0;
+linked_list* last = ll;	
+
+// list does not exist
+if(ll == NULL)
+{
+return -1;
+}
+
+	return 0;
+
 }
 
 // will count the number of elements in the list
 // return value: amount
 int linkedlist_status(linked_list *ll)
 {
-return 0;
+	// list does not exits return -1
+	if(ll == NULL)
+	{
+		return -1;
+	}
+	if(ll->next == NULL)
+	{
+		// if ll->next is null return the index +1 because of the value at index 0
+		return ll->index+1;
+	}else{
+		// if ll->next is not null call the function recursive with ll->next as ll
+		return linkedlist_status(ll->next);
+	}
 }
