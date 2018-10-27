@@ -11,9 +11,10 @@ before_install:
  - sudo apt-get install -y valgrind
  - ls -al
  - cd /usr/src/
- - ls -al
  - sudo apt-get install libgtest-dev
+ - sudo apt-get install cmake 
  - cd /usr/src/gtest 
+ - ls -al
  - sudo cmake .
  - sudo make
  - sudo mv libg* /usr/lib/
