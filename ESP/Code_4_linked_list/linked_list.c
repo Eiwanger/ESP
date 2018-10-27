@@ -15,15 +15,21 @@
 int add_to_list(linked_list *ll, char*s)
 {
 	linked_list *new_box;
-	if((new_box = (linked_list*) malloc(sizeof(linked_list))) == NULL)
-	{
-		// not enough memory space
-		return -1;
-	}
+	linked_list *previous;
+
+
+
 	// check if ll is null, then return -1, because we can't change a nullpointer
 	// check if s is null, it's no use storing a nullpointer
 	if(ll == NULL || s == NULL)
 	{
+		return -1;
+	}
+
+	//malloc new space for the new element
+	if((new_box = (linked_list*) malloc(sizeof(linked_list))) == NULL)
+	{
+		// not enough memory space
 		return -1;
 	}
 

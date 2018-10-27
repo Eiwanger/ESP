@@ -3,6 +3,7 @@ typedef struct linked_list{
 	char* data;
 	int index; /* normally not used with linked lists, just for the exercises */
 	struct linked_list *next;
+	struct linked_list *previous;
 } linked_list;
 
 
