@@ -3,6 +3,9 @@ compiler:
   - gcc
 os: linux
 dist: trusty
+env:
+ - GTEST_DIR=~/user/lib/googletest/googletest
+
 before_install:
  - sudo apt-get -qq update
  - pwd
@@ -10,7 +13,6 @@ before_install:
  - git clone https://github.com/google/googletest.git
  - sudo apt-get install -y valgrind
  - ls -al
- - cd /usr/src/
  - sudo apt-get install libgtest-dev
  - sudo apt-get install cmake 
  - cd /usr/src/gtest 
@@ -18,17 +20,18 @@ before_install:
  - sudo cmake .
  - sudo make
  - sudo mv libg* /usr/lib/
+ - cd /usr/lib/
+ - ls -la
  - which valgrind
  - cd "${TRAVIS_BUILD_DIR}"
  - cd ESP/Code_4_linked_list/
- - export GTEST_DIR=~/home/travis/build/Eiwanger/googletest/googletest
- - g++ -c -isystem /home/travis/build/Eiwanger/googletest/googletest/include -I/home/travis/build/Eiwanger/googletest/googletest Gtest_main.c 
- - g++ -isystem /home/travis/build/Eiwanger/googletest/googletest/include -I/home/travis/build/Eiwanger/googletest/googletest -pthread -c /home/travis/build/Eiwanger/googletest/googletest/src/gtest-all.cc
+ - g++ -c -isystem ${GTEST_DIR}/include -I ${GTEST_DIR} Gtest_main.c 
+ - g++ -isystem ${GTEST_DIR}/include -I${GTEST_DIR} -pthread -c ${GTEST_DIR}/home/travis/build/Eiwanger/src/gtest-all.cc
  -  ar -rv libgtest.a gtest-all.o
 
- - g++ -c -isystem /home/travis/build/Eiwanger/googletest/googletest/include -I/home/travis/build/Eiwanger/googletest/googletest linked_list_test_case.c -o linked_list_test_case.o
+ - g++ -c -isystem ${GTEST_DIR}/include -I ${GTEST_DIR} linked_list_test_case.c -o linked_list_test_case.o
  - g++ -Wall -c -g linked_list.c -o linked_list_test.o
- - g++ -I /home/travis/build/Eiwanger/googletest/googletest/include -pthread linked_list_test_case.o Gtest_main.o libgtest.a linked_list_test.o -g -o unit_test 
+ - g++ -I ${GTEST_DIR}/include -pthread linked_list_test_case.o Gtest_main.o libgtest.a linked_list_test.o -g -o unit_test 
 
 #before_scrip    - make test
 #script:
