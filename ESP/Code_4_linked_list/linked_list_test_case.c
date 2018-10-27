@@ -24,25 +24,34 @@ TEST(add_to_list_test,test_normal) {
 
 	head->next=NULL; 
 	head->data=str; 
+	head->previous = NULL;
 	head->index=0;
 
+	// check after call of add_to_list if the return value is right
+	// and the previous pointer is set
 	i=add_to_list(head,str1);
 	EXPECT_EQ(1,i);
+	EXPECT_EQ((linked_list*)head, (linked_list*)head->next->previous);
 
 	i=add_to_list(head,str2);
 	EXPECT_EQ(2,i);
+	EXPECT_EQ((linked_list*)head->next, (linked_list*)head->next->next->previous);
 
 	i=add_to_list(head,str3);
 	EXPECT_EQ(3,i);
+	EXPECT_EQ((linked_list*)head->next->next, (linked_list*)head->next->next->next->previous);
 
 	i=add_to_list(head,str4);
 	EXPECT_EQ(4,i);
+	EXPECT_EQ((linked_list*)head->next->next->next, (linked_list*)head->next->next->next->next->previous);
 
 	i=add_to_list(head,str5);
 	EXPECT_EQ(5,i);
+	EXPECT_EQ((linked_list*)head->next->next->next->next, (linked_list*)head->next->next->next->next->next->previous);
 
 	i=add_to_list(head,str6);
 	EXPECT_EQ(6,i);
+	EXPECT_EQ((linked_list*)head->next->next->next->next->next, (linked_list*)head->next->next->next->next->next->next->previous);
 
 }
 
@@ -74,6 +83,7 @@ TEST(add_to_list_test, test_string_equals_null)
 
 	head->next=NULL;
 	head->data=str;
+	head->previous = NULL;
 	head->index=0;
 
 
@@ -82,6 +92,53 @@ TEST(add_to_list_test, test_string_equals_null)
 	EXPECT_EQ(i, -1);
 
 }
+
+/*-------------------------------------------------------------------------*/
+
+// test if the function works well if the parameter is the last pointer 
+TEST(add_to_list_test, test_pointer_to_end)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	char str2[10]="first";
+	char str3[10]="second";
+	char str4[10]="third";
+	char str5[10]="fourth";
+	char str6[10]="fifth";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->index=0;
+	head->data=str;
+	head->previous = NULL;
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->previous = head;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->previous = head->next;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
+	head->next->next->next->next = NULL;
+
+	// try to add a element when the parameter points to the last element of the list
+	i = add_to_list(head->next->next->next, str4);
+
+	// check if the index is right 
+	EXPECT_EQ(i, 4);
+	EXPECT_EQ((linked_list*)head->next->next->next, (linked_list*)head->next->next->next->next->previous);
+
+
+}
+
 
 /***************************************************************************/
 
@@ -100,6 +157,7 @@ TEST(display_item_test, test_normal)
 	head->next=NULL;
 	head->data=str;
 	head->index=0;
+	head->previous = NULL;
 
 	// print it two times, so the tester can see if it works in the terminal
 	printf("%s\n", str);
@@ -127,6 +185,8 @@ TEST(display_item_test, test_return_ok)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -163,6 +223,8 @@ TEST(display_item_test, test_nullpointer)
 	head->next=NULL;
 	head->data=str;
 	head->index=0;
+	head->previous = NULL;
+
 
 	i = display_item(head->next);
 
@@ -187,6 +249,8 @@ TEST(display_list_test,test_empty)
 
 	head->next=NULL;
 	head->data=str;
+	head->previous = NULL;
+
 	head->index=0;
 
 	result = display_list(head);
@@ -231,6 +295,8 @@ TEST(display_list,test_normal)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -282,6 +348,7 @@ TEST(search_from_list_test,test_normal)
 	head = (struct linked_list*) malloc(sizeof(linked_list));
 	head->data=str;
 	head->index=0;
+	head->previous = NULL;
 
 
 	head->next = (struct linked_list*) malloc(sizeof(linked_list));
@@ -321,6 +388,8 @@ TEST(search_from_list_test,test_special_cases)
 	head->index=0;
 	head->data=str;
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+	head->previous = NULL;
+
 
 	head->next->index=1;
 	head->next->data=str1;
@@ -386,6 +455,8 @@ TEST(search_from_list,test_not_found)
 	head->next=NULL;
 	head->data=str;
 	head->index=0;
+	head->previous = NULL;
+
 
 	found=search_from_list(head,(char *)"third");
 
@@ -441,6 +512,8 @@ TEST(delete_from_list_test,test_normal)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -508,6 +581,8 @@ TEST(delete_from_list_test,test_delete_head) {
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -570,6 +645,8 @@ TEST(delete_from_list_test,multi) {
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -639,6 +716,8 @@ TEST(delete_from_list_test,test_index_out_of_bounds)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -682,6 +761,8 @@ TEST(delete_from_list_test,test_delete_last_elements)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -721,6 +802,8 @@ TEST(empty_list_test,test_normal)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -771,6 +854,8 @@ TEST(empty_list_test,test_single_element_in_list)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -796,6 +881,8 @@ TEST(empty_list_test,test_only_head)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=NULL;
 
 	i = empty_list(head);
@@ -827,6 +914,8 @@ TEST(swap_items_test,test_normal)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -857,6 +946,11 @@ TEST(swap_items_test,test_normal)
 	// check the position of the data
 	EXPECT_STREQ(head->next->data, str2);
 	EXPECT_STREQ(head->next->next->data, str1);
+
+	i = swap_items(head->next->next->next, head->next);
+	EXPECT_EQ(i, 0);
+	EXPECT_STREQ(head->next->next->next->data, str2);
+	EXPECT_STREQ(head->next->data, str3);
 }
 /*-------------------------------------------------------------------------*/
 
@@ -876,6 +970,8 @@ TEST(swap_items_test,test_swap_different_length)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -923,6 +1019,8 @@ TEST(swap_items_test,test_nullpointer)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -988,6 +1086,8 @@ TEST(swap_items_test,test_swap_head)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -1019,6 +1119,60 @@ TEST(swap_items_test,test_swap_head)
 	EXPECT_STREQ(head->data, str1);
 	EXPECT_STREQ(head->next->data, str);
 }
+/*-------------------------------------------------------------------------*/
+
+// test swap_items with strings which are in different linked lists
+TEST(swap_items_test,test_swap_different_linked_lists)
+{
+	char str[15]="List Start";
+	char str1[40]="Let's see if this works";
+	char str2[10]="first";
+	char str3[10]="second";
+	char str4[10]="third";
+	char str5[10]="fourth";
+	char str6[10]="fifth";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+	linked_list *another_head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->previous = NULL;
+
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->next = NULL;
+
+	another_head->index=0;
+	another_head->data=str3;
+	another_head->previous = NULL;
+
+	another_head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	another_head->next->index=1;
+	another_head->next->data=str4;
+	another_head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	another_head->next->next->index=2;
+	another_head->next->next->data=str5;
+	another_head->next->next->next = NULL;
+
+
+	// call swap_items
+	i = swap_items(head->next,another_head->next->next);
+	// check the return value
+	EXPECT_EQ(i,-1);
+
+	i = swap_items(another_head->next, head->next);
+	EXPECT_EQ(i,-1);
+}
 
 /***************************************************************************/
 
@@ -1040,6 +1194,8 @@ TEST(sort_list_test,test_normal)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -1083,6 +1239,8 @@ TEST(sort_list_test,test_special_cases)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -1145,6 +1303,8 @@ TEST(linkedlist_status_test,test_normal)
 
 	head->index=0;
 	head->data=str;
+	head->previous = NULL;
+
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
@@ -1181,8 +1341,8 @@ TEST(linkedlist_status_test,test_nullpointer)
 	// check status
 	i = linkedlist_status(head);
 
-	// we expect an error so -1 
-	EXPECT_EQ(i , -1);
+	// we expect an empty list so 0 
+	EXPECT_EQ(i , 0);
 }
 
 
@@ -1213,6 +1373,8 @@ TEST(combination_test,display_list_add_to_list_test)
 
 	head->next=NULL;
 	head->data=str;
+	head->previous = NULL;
+
 	head->index=0;
 
 	i=add_to_list(head,str1);

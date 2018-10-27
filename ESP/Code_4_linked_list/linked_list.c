@@ -15,8 +15,6 @@
 int add_to_list(linked_list *ll, char*s)
 {
 	linked_list *new_box;
-	linked_list *previous;
-
 
 
 	// check if ll is null, then return -1, because we can't change a nullpointer
@@ -26,7 +24,7 @@ int add_to_list(linked_list *ll, char*s)
 		return -1;
 	}
 
-	//malloc new space for the new element
+	// malloc new space for the new element
 	if((new_box = (linked_list*) malloc(sizeof(linked_list))) == NULL)
 	{
 		// not enough memory space
@@ -34,17 +32,21 @@ int add_to_list(linked_list *ll, char*s)
 	}
 
 
-	// ll wasn't null so set the data and count till tmp->next is null
+	// ll wasn't null so set the data and count till ll->next is null
 	new_box -> next = NULL; // set next and data
 	new_box -> data = s;
 
-	while(ll->next != NULL){
+
+	while(ll->next != NULL)
+	{
 		ll = ll->next;
 	} 
+
 	// now we are at the last position
 	new_box -> index = ll -> index + 1;
-
 	ll -> next = new_box;
+
+	new_box -> previous = ll;
 
 	return new_box -> index;
 }
@@ -244,6 +246,22 @@ int swap_items(linked_list *f, linked_list *s)
 	{
 		return -1;
 	}
+	// check if data exits in the same list
+	if(f->index < s->index)
+	{
+		if(search_from_list(f, s->data) == NULL)
+		{
+			return -1;
+		}
+	}
+	else
+	{
+		if(search_from_list(s, f->data) == NULL)
+		{
+			return -1;
+		}
+	}
+
 
 	// save the data in the temporary string
 	tmp_f = f -> data;
@@ -296,12 +314,13 @@ int sort_list(linked_list*ll)
 // 0 if they are the same and -1 if the second string is bigger
 int compare_strings(char* f, char* s)
 {
+	int i = 0;
+
 	// return 0 in case of a nullpointer, so no swap will be executed
 	if(f == NULL || s == NULL)
 	{
 		return 0;
 	}
-	int i = 0;
 	while (f[i] != '\0')
 	{
 		if (s[i] == '\0')
@@ -332,13 +351,16 @@ int linkedlist_status(linked_list *ll)
 	// list does not exits return -1
 	if(ll == NULL)
 	{
-		return -1;
+		return 0;
 	}
 	if(ll->next == NULL)
 	{
 		// if ll->next is null return the index +1 because of the value at index 0
+ 
 		return ll->index+1;
-	}else{
+	}
+
+else{
 		// if ll->next is not null call the function recursive with ll->next as ll
 		return linkedlist_status(ll->next);
 	}
