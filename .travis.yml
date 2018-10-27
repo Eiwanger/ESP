@@ -12,6 +12,7 @@ before_install:
  - ls -al
  - cd /usr/src/
  - ls -al
+ - sudo apt-get install libgtest-dev
  - cd /usr/src/gtest 
  - sudo cmake .
  - sudo make
