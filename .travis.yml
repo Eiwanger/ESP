@@ -4,7 +4,7 @@ compiler:
 os: linux
 dist: trusty
 env:
- - GTEST_DIR=/home/travis/build/Eiwanger/googletest/googletest
+ - GTEST_DIR=/home/travis/build/Eiwanger/ESP/googletest/googletest
 
 before_install:
  - sudo apt-get -qq update
