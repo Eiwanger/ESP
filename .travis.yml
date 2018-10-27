@@ -23,6 +23,9 @@ before_install:
  - cd ESP/Code_4_linked_list/
  - export GTEST_DIR=~/home/travis/Studium/WS18_fin/prg_c/googletest/googletest
  - g++ -c -isystem /home/travis/Studium/WS18_fin/prg_c/googletest/googletest/include -I/home/travis/Studium/WS18_fin/prg_c/googletest/googletest Gtest_main.c 
+ - g++ -isystem /home/travis/Studium/WS18_fin/prg_c/googletest/googletest/include -I/home/travis/Studium/WS18_fin/prg_c/googletest/googletest -pthread -c /home/travis/Studium/WS18_fin/prg_c/googletest/googletest/src/gtest-all.cc
+ -  ar -rv libgtest.a gtest-all.o
+
  - g++ -c -isystem /home/travis/Studium/WS18_fin/prg_c/googletest/googletest/include -I/home/travis/Studium/WS18_fin/prg_c/googletest/googletest linked_list_test_case.c -o linked_list_test_case.o
  - g++ -Wall -c -g linked_list.c -o linked_list_test.o
  - g++ -I /home/travis/Studium/WS18_fin/prg_c/googletest/googletest/include -pthread linked_list_test_case.o Gtest_main.o libgtest.a linked_list_test.o -g -o unit_test 
