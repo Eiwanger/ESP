@@ -23,3 +23,5 @@ int swap_items(linked_list *f, linked_list *s);
 int sort_list(linked_list*ll);
 
 int linkedlist_status(linked_list *ll);
+
+int compare_strings(char*f, char*s);

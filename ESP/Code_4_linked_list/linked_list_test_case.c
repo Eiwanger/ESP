@@ -742,7 +742,7 @@ TEST(empty_list_test,test_normal)
 	// call empty_list
 	i = empty_list(head);
 	// after empty_list call check the amount of items which were in the list
-	EXPECT_EQ(i,5);
+	EXPECT_EQ(i,4);
 	// check if head ->next is null
 	EXPECT_EQ((linked_list*)head->next, (linked_list*)NULL);
 }
@@ -779,7 +779,7 @@ TEST(empty_list_test,test_single_element_in_list)
 
 	i = empty_list(head);
 	// after empty_list call check the amount of items which were in the list
-	EXPECT_EQ(i,2);
+	EXPECT_EQ(i,1);
 	// check if head ->next is null
 	EXPECT_EQ((linked_list*)head->next, (linked_list*)NULL);
 }
@@ -790,7 +790,7 @@ TEST(empty_list_test,test_single_element_in_list)
 /*                 Test for swap_items                                     */
 /***************************************************************************/
 
-// test swap_items expecting 0 foor OK 
+// test swap_items expecting 0 for OK 
 TEST(swap_items_test,test_normal)
 {
 	char str[15]="List Start";
@@ -839,7 +839,7 @@ TEST(swap_items_test,test_normal)
 }
 /*-------------------------------------------------------------------------*/
 
-// test swap_items with strings which differ in legth expecting 0 foor OK 
+// test swap_items with strings which differ in legth expecting 0 for OK 
 TEST(swap_items_test,test_swap_different_length)
 {
 	char str[15]="List Start";
@@ -888,7 +888,7 @@ TEST(swap_items_test,test_swap_different_length)
 }
 /*-------------------------------------------------------------------------*/
 
-// test swap_items expecting 0 foor OK 
+// test swap_items expecting -1 for error 
 TEST(swap_items_test,test_nullpointer)
 {
 	char str[15]="List Start";
@@ -949,8 +949,55 @@ TEST(swap_items_test,test_nullpointer)
 
 
 }
-/*-------------------------------------------------------------------------*/
 
+/*-------------------------------------------------------------------------*/
+// test swap_items expecting 0 for OK try swapping the head
+TEST(swap_items_test,test_swap_head)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	char str2[10]="first";
+	char str3[10]="second";
+	char str4[10]="third";
+	char str5[10]="fourth";
+	char str6[10]="fifth";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->index=4;
+	head->next->next->next->next->data=str4;
+	head->next->next->next->next->next = NULL;
+
+	// check the strings of the listelements we want to change
+	EXPECT_STREQ(head->data, str);
+	EXPECT_STREQ(head->next->data, str1);
+
+
+	// call swap_items
+	i = swap_items(head,head->next);
+	// check the return value
+	EXPECT_EQ(i,0);
+	// check the position of the data
+	EXPECT_STREQ(head->data, str1);
+	EXPECT_STREQ(head->next->data, str);
+}
 
 /***************************************************************************/
 
@@ -961,9 +1008,9 @@ TEST(swap_items_test,test_nullpointer)
 // test sort_list without expecting errors
 TEST(sort_list_test,test_normal)
 {
-	char str[15]="List Start";
-	char str1[10]="zero";
-	char str2[10]="first";
+	char str[15]="list Start";
+	char str1[10]="hero";
+	char str2[10]="apple";
 	char str3[10]="second";
 	char str4[10]="third";
 	int i;
@@ -990,15 +1037,16 @@ TEST(sort_list_test,test_normal)
 	head->next->next->next->next->data=str4;
 	head->next->next->next->next->next = NULL;
 
+display_list(head);
 	i = sort_list(head);
 	// check if i euqals 0 ok
 	EXPECT_EQ(i, 0);	
 	EXPECT_STREQ(head->data, str2);	
-	EXPECT_STREQ(head->next->data, str);	
-	EXPECT_STREQ(head->next->next->data, str3);	
-	EXPECT_STREQ(head->next->next->next->data, str4);	
-	EXPECT_STREQ(head->next->next->next->next->data, str1);	
-
+	EXPECT_STREQ(head->next->data, str1);	
+	EXPECT_STREQ(head->next->next->data, str);	
+	EXPECT_STREQ(head->next->next->next->data, str3);	
+	EXPECT_STREQ(head->next->next->next->next->data, str4);	
+display_list(head);
 }
 
 TEST(sort_list_test,test_nullpointer)
@@ -1059,6 +1107,7 @@ TEST(linkedlist_status_test,test_normal)
 	EXPECT_EQ(i , 5);
 }
 
+/*-------------------------------------------------------------------------*/
 // test linkedlist_status in case of a nullpointer
 TEST(linkedlist_status_test,test_nullpointer)
 {
@@ -1138,4 +1187,66 @@ TEST(combination_test,display_list_add_to_list_test)
 	EXPECT_EQ(i,6);
 	EXPECT_STREQ(head->next->next->next->next->next->next->data,str6);
 
+}
+
+/***************************************************************************/
+/*                 Test for sort_list                                      */
+/***************************************************************************/
+// test my own function compare_strings for the case of a nullpointer
+TEST(compare_strings_test, test_nullpointer)
+{
+char* f = NULL;
+char* s = "hello";
+int i;
+
+// call function with f as a nullpointer expect 0 at parameter 1
+i = compare_strings(f, s);
+EXPECT_EQ(i, 0);
+
+// call function with f as a nullpointer expect 0 at parameter 2
+i = compare_strings(s, f);
+EXPECT_EQ(i, 0);
+}
+/*-------------------------------------------------------------------------*/
+
+// test my own function compare_strings for the case of a nullpointer
+TEST(compare_strings_test, test_normal_and_special_cases)
+{
+char str1[10] = "hello";
+char str2[10] = "hello";
+char str3[10] = "hero";
+char str4[40] = "Let's test a longer string";
+char str5[40] = "some +ß?=)(*+ special letters";
+char str6[40] = "Let's test a longer strink";
+char str7[10] = "hello ";
+int i;
+
+// call function with with different parameters 
+i = compare_strings(str1, str2);
+EXPECT_EQ(i, 0);
+
+i = compare_strings(str1, str3);
+EXPECT_EQ(i, -1);
+
+// here it's 1 because of capital letter L
+i = compare_strings(str1, str4);
+EXPECT_EQ(i, 1);
+
+i = compare_strings(str1, str5);
+EXPECT_EQ(i, -1);
+
+i = compare_strings(str5, str3);
+EXPECT_EQ(i, 1);
+
+i = compare_strings(str5, str5);
+EXPECT_EQ(i, 0);
+
+i = compare_strings(str7, str1);
+EXPECT_EQ(i, 1);
+
+i = compare_strings(str4, str6);
+EXPECT_EQ(i, -1);
+
+i = compare_strings(str6, str5);
+EXPECT_EQ(i, -1);
 }

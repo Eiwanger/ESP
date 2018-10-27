@@ -75,12 +75,13 @@ int display_list(linked_list *ll)
 		// list does not exits therefore I return -1
 		return -1;
 	}
-	while(tmp->next != NULL)
+	while(ll != NULL)
 	{
 		printf("\n----------------------------------\n");
-		printf("%s\n", tmp->data);
-		tmp = tmp->next;
-
+		printf("%s\n", ll->data);
+		tmp = ll;
+		ll = ll->next;
+	
 	}
 	printf("\n----------------------------------\n");
 
@@ -185,7 +186,6 @@ int empty_list(linked_list *ll)
 	linked_list *tmp;
 	linked_list *last;
 	int last_index;
-	int i;
 	// list does not exist
 	if(ll == NULL)
 	{
@@ -201,7 +201,6 @@ int empty_list(linked_list *ll)
 	// now we are at the last position
 	last_index = tmp->index;
 
-	i = last_index;
 	// check if the first element is null, if not delete it
 	while(ll->next != NULL)
 	{
@@ -223,7 +222,7 @@ int empty_list(linked_list *ll)
 	// it is not possible for me to delete it 
 
 	// on index 0 we also store something, so index+1 is our itemcount	
-	return last_index + 1;
+	return last_index;
 
 }
 
@@ -242,8 +241,8 @@ int swap_items(linked_list *f, linked_list *s)
 
 	// save the data in the temporary string
 	tmp_f = f -> data;
-	
-// swap the data
+
+	// swap the data
 	f->data = s->data;
 	s->data = tmp_f;
 
@@ -251,18 +250,72 @@ int swap_items(linked_list *f, linked_list *s)
 }
 
 // sort list in rising order based on data
+// only works with same capital letter
+// else ascii numbers will be used and could differ the result
 int sort_list(linked_list*ll)
 {
-linked_list* last = ll;	
+	linked_list* outer_iterator = ll;	
+	linked_list* inner_iterator = ll;
 
-// list does not exist
-if(ll == NULL)
-{
-return -1;
-}
+	int comp;
+	// list does not exist
+	if(ll == NULL)
+	{
+		return -1;
+	}
 
+	while(outer_iterator != NULL)
+	{
+		while(inner_iterator != NULL)
+		{
+			comp = compare_strings(outer_iterator->data, inner_iterator->data);
+			if(comp == 1)
+			{
+				// the new element is smaller, so we call swap to change it 
+				// to the place of the compared string
+				swap_items(outer_iterator, inner_iterator);
+			}
+			inner_iterator = inner_iterator->next;
+		}
+		outer_iterator = outer_iterator->next;
+		inner_iterator = outer_iterator;
+	}
+// when we are here everything worked fine and we return 0
 	return 0;
 
+}
+
+// check if 2 given strings are the same return 1 if the first is greater than the second
+// 0 if they are the same and -1 if the second string is bigger
+int compare_strings(char* f, char* s)
+{
+// return 0 in case of a nullpointer, so no swap will be executed
+if(f == NULL || s == NULL)
+{
+return 0;
+}
+	int i = 0;
+	while (f[i] != '\0')
+	{
+		if (s[i] == '\0')
+		{
+			return 1;
+		}
+		if (s[i] > f[i])
+		{
+			return -1;
+		}
+		if (f[i] > s[i])
+		{
+			return 1;
+		}
+		i++;
+	}
+	if(s[i] != '\0')
+	{
+		return -1;
+	}
+	return 0; // strings are the same
 }
 
 // will count the number of elements in the list
