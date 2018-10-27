@@ -30,7 +30,6 @@ before_install:
  - g++ -Wall -c -g linked_list.c -o linked_list_test.o
  - g++ -I /home/travis/build/Eiwanger/googletest/googletest/include -pthread linked_list_test_case.o Gtest_main.o libgtest.a linked_list_test.o -g -o unit_test 
 
-/home/travis/build/Eiwanger/
 #before_scrip    - make test
 #script:
 #    - ./unit_test
