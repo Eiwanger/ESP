@@ -783,6 +783,27 @@ TEST(empty_list_test,test_single_element_in_list)
 	// check if head ->next is null
 	EXPECT_EQ((linked_list*)head->next, (linked_list*)NULL);
 }
+
+/*-------------------------------------------------------------------------*/
+// test empty_list with only the head 
+TEST(empty_list_test,test_only_head)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->next=NULL;
+
+	i = empty_list(head);
+	// after empty_list call check the amount of items which were in the list
+	EXPECT_EQ(i,0);
+	// check if head ->next is null
+	EXPECT_EQ((linked_list*)head->next, (linked_list*)NULL);
+}
 /***************************************************************************/
 
 
@@ -1037,7 +1058,6 @@ TEST(sort_list_test,test_normal)
 	head->next->next->next->next->data=str4;
 	head->next->next->next->next->next = NULL;
 
-display_list(head);
 	i = sort_list(head);
 	// check if i euqals 0 ok
 	EXPECT_EQ(i, 0);	
@@ -1046,9 +1066,52 @@ display_list(head);
 	EXPECT_STREQ(head->next->next->data, str);	
 	EXPECT_STREQ(head->next->next->next->data, str3);	
 	EXPECT_STREQ(head->next->next->next->next->data, str4);	
-display_list(head);
 }
 
+/*-------------------------------------------------------------------------*/
+// test sort_list with special letter and uppercase letters
+TEST(sort_list_test,test_special_cases)
+{
+	char str[20]=" LIST15Start";
+	char str1[20]="!§$%&??";
+	char str2[20]="!§$%&?!";
+	char str3[20]="s";
+	char str4[20]="t";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->index=4;
+	head->next->next->next->next->data=str4;
+	head->next->next->next->next->next = NULL;
+
+	i = sort_list(head);
+	// check if i euqals 0 ok
+	EXPECT_EQ(i, 0);	
+	EXPECT_STREQ(head->data, str);	
+	EXPECT_STREQ(head->next->data, str2);	
+	EXPECT_STREQ(head->next->next->data, str1);	
+	EXPECT_STREQ(head->next->next->next->data, str3);	
+	EXPECT_STREQ(head->next->next->next->next->data, str4);	
+}
+/*-------------------------------------------------------------------------*/
+// test sort_list in case of a nullpointer
 TEST(sort_list_test,test_nullpointer)
 {
 	int i;
@@ -1190,63 +1253,67 @@ TEST(combination_test,display_list_add_to_list_test)
 }
 
 /***************************************************************************/
-/*                 Test for sort_list                                      */
+/*                 Test for compare_strings                                      */
 /***************************************************************************/
 // test my own function compare_strings for the case of a nullpointer
 TEST(compare_strings_test, test_nullpointer)
 {
-char* f = NULL;
-char* s = "hello";
-int i;
+	char* f = NULL;
+	char s[10] = "hello";
+	int i;
 
-// call function with f as a nullpointer expect 0 at parameter 1
-i = compare_strings(f, s);
-EXPECT_EQ(i, 0);
+	// call function with f as a nullpointer expect 0 at parameter 1
+	i = compare_strings(f, s);
+	EXPECT_EQ(i, 0);
 
-// call function with f as a nullpointer expect 0 at parameter 2
-i = compare_strings(s, f);
-EXPECT_EQ(i, 0);
+	// call function with f as a nullpointer expect 0 at parameter 2
+	i = compare_strings(s, f);
+	EXPECT_EQ(i, 0);
 }
 /*-------------------------------------------------------------------------*/
 
 // test my own function compare_strings for the case of a nullpointer
 TEST(compare_strings_test, test_normal_and_special_cases)
 {
-char str1[10] = "hello";
-char str2[10] = "hello";
-char str3[10] = "hero";
-char str4[40] = "Let's test a longer string";
-char str5[40] = "some +ß?=)(*+ special letters";
-char str6[40] = "Let's test a longer strink";
-char str7[10] = "hello ";
-int i;
+	char str1[10] = "hello";
+	char str2[10] = "hello";
+	char str3[10] = "hero";
+	char str4[40] = "Let's test a longer string";
+	char str5[40] = "some +ß?=)(*+ special letters";
+	char str6[40] = "Let's test a longer strink";
+	char str7[10] = "hello ";
+	char str8[10] = "hell";
+	int i;
 
-// call function with with different parameters 
-i = compare_strings(str1, str2);
-EXPECT_EQ(i, 0);
+	// call function with with different parameters 
+	i = compare_strings(str1, str2);
+	EXPECT_EQ(i, 0);
 
-i = compare_strings(str1, str3);
-EXPECT_EQ(i, -1);
+	i = compare_strings(str1, str3);
+	EXPECT_EQ(i, -1);
 
-// here it's 1 because of capital letter L
-i = compare_strings(str1, str4);
-EXPECT_EQ(i, 1);
+	// here it's 1 because of capital letter L
+	i = compare_strings(str1, str4);
+	EXPECT_EQ(i, 1);
 
-i = compare_strings(str1, str5);
-EXPECT_EQ(i, -1);
+	i = compare_strings(str1, str5);
+	EXPECT_EQ(i, -1);
 
-i = compare_strings(str5, str3);
-EXPECT_EQ(i, 1);
+	i = compare_strings(str5, str3);
+	EXPECT_EQ(i, 1);
 
-i = compare_strings(str5, str5);
-EXPECT_EQ(i, 0);
+	i = compare_strings(str5, str5);
+	EXPECT_EQ(i, 0);
 
-i = compare_strings(str7, str1);
-EXPECT_EQ(i, 1);
+	i = compare_strings(str7, str1);
+	EXPECT_EQ(i, 1);
 
-i = compare_strings(str4, str6);
-EXPECT_EQ(i, -1);
+	i = compare_strings(str4, str6);
+	EXPECT_EQ(i, -1);
 
-i = compare_strings(str6, str5);
-EXPECT_EQ(i, -1);
+	i = compare_strings(str6, str5);
+	EXPECT_EQ(i, -1);
+
+	i = compare_strings(str8, str1);
+	EXPECT_EQ(i, -1);
 }

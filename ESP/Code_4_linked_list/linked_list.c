@@ -81,7 +81,7 @@ int display_list(linked_list *ll)
 		printf("%s\n", ll->data);
 		tmp = ll;
 		ll = ll->next;
-	
+
 	}
 	printf("\n----------------------------------\n");
 
@@ -268,6 +268,7 @@ int sort_list(linked_list*ll)
 	{
 		while(inner_iterator != NULL)
 		{
+			// use own function to compare strings
 			comp = compare_strings(outer_iterator->data, inner_iterator->data);
 			if(comp == 1)
 			{
@@ -280,7 +281,7 @@ int sort_list(linked_list*ll)
 		outer_iterator = outer_iterator->next;
 		inner_iterator = outer_iterator;
 	}
-// when we are here everything worked fine and we return 0
+	// when we are here everything worked fine and we return 0
 	return 0;
 
 }
@@ -289,11 +290,11 @@ int sort_list(linked_list*ll)
 // 0 if they are the same and -1 if the second string is bigger
 int compare_strings(char* f, char* s)
 {
-// return 0 in case of a nullpointer, so no swap will be executed
-if(f == NULL || s == NULL)
-{
-return 0;
-}
+	// return 0 in case of a nullpointer, so no swap will be executed
+	if(f == NULL || s == NULL)
+	{
+		return 0;
+	}
 	int i = 0;
 	while (f[i] != '\0')
 	{
