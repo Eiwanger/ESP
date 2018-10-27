@@ -58,7 +58,7 @@ int display_item(linked_list *ll)
 	// print data in a seperated lien
 	printf("\n%s\n", ll->data);
 
-	return ll->index;
+	return 0;
 }
 
 
@@ -84,7 +84,7 @@ int display_list(linked_list *ll)
 	}
 	printf("\n----------------------------------\n");
 
-	return tmp->index;
+	return tmp->index+1;
 
 }
 
@@ -156,7 +156,7 @@ int delete_from_list(linked_list *ll, int index)
 			ll->index = last -> index + 1;
 			// list got new indexes
 			// return the end index
-			return ll -> index; 
+			return ll -> index+1; 
 		}
 		last = ll;
 		ll = ll->next;
@@ -167,7 +167,7 @@ int delete_from_list(linked_list *ll, int index)
 	{
 		last -> next = NULL;
 		free(ll);
-		return last->index;
+		return last->index+1;
 	}
 
 	// we didn't find the index, bail out with -1

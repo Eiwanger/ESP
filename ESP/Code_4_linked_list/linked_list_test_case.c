@@ -90,7 +90,7 @@ TEST(add_to_list_test, test_string_equals_null)
 /*                 Test for display_item function                          */
 /***************************************************************************/
 
-// test the display_item function, the return value is the same as the index
+// test the display_item function, the return value is 0
 TEST(display_item_test, test_normal)
 {
 	char str[20] = "User check me out";
@@ -106,12 +106,12 @@ TEST(display_item_test, test_normal)
 	i = display_item(head);
 
 
-	EXPECT_EQ(i, head->index);
+	EXPECT_EQ(i, 0);
 }
 
 /*-------------------------------------------------------------------------*/
 
-// test return value of a listelement in the middle of a list
+// test return value 0 of a listelement in the middle of a list
 TEST(display_item_test, test_return_value)
 {
 	char str[15]="List Start";
@@ -148,7 +148,7 @@ TEST(display_item_test, test_return_value)
 	printf("%s\n", str4);
 	i = display_item(head->next->next->next->next);
 
-	EXPECT_EQ(i, 4);
+	EXPECT_EQ(i, 0);
 }
 
 
@@ -191,7 +191,7 @@ TEST(display_list_test,test_empty)
 
 	result = display_list(head);
 
-	EXPECT_EQ(result, 0);
+	EXPECT_EQ(result, 1);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -257,7 +257,7 @@ TEST(display_list,test_normal)
 
 	i = display_list(head);
 
-	EXPECT_EQ(i, 4);
+	EXPECT_EQ(i, 5);
 }
 
 /***************************************************************************/
@@ -462,7 +462,7 @@ TEST(delete_from_list_test,test_normal)
 	i = delete_from_list(head,2);
 	// after deleting index 2, str3 should now be on the pos of index 2
 	EXPECT_STREQ(head->next->next->data,str3);
-	EXPECT_EQ(i,3);
+	EXPECT_EQ(i,4);
 
 				printf("%d : %s \n", head->index, head->data);
 printf("%d : %s \n", head->next->index, head->next->data);
@@ -542,13 +542,13 @@ TEST(delete_from_list_test,multi) {
 
 	// remove elements and check the remaining lenght
 	i = delete_from_list(head,2);
-	EXPECT_EQ(i, 6);
+	EXPECT_EQ(i, 7);
 
 	i = delete_from_list(head,3);
-	EXPECT_EQ(i, 5);
+	EXPECT_EQ(i, 6);
 
 	i = delete_from_list(head,4);
-	EXPECT_EQ(i, 4);
+	EXPECT_EQ(i, 5);
 
 	// check again elements data
 	EXPECT_STREQ(head->next->next->data, str3);
@@ -626,7 +626,7 @@ TEST(delete_from_list_test,test_delete_last_elements)
 	// delete the first element, expect lenght of 0
 	i = delete_from_list(head,1);
 
-	EXPECT_EQ(i,0);
+	EXPECT_EQ(i,1);
 	// delete the head, it should throw an error so we expect -1 
 i = delete_from_list(head, 0);	
 	EXPECT_EQ(i,-1);
