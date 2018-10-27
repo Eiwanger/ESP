@@ -278,8 +278,8 @@ TEST(display_list_test,test_nullpointer)
 
 
 /*-------------------------------------------------------------------------*/
-// test display_list and check return value of the function
-TEST(display_list,test_normal)
+// test display_list and check return value of the function with the pointer at start
+TEST(display_list_test,test_normal_pointer_at_start)
 {
 	char str[15]="List Start";
 	char str1[10]="zero";
@@ -327,6 +327,58 @@ TEST(display_list,test_normal)
 	// 5 values in the list => we expect a 5
 	EXPECT_EQ(i, 5);
 }
+
+/*-------------------------------------------------------------------------*/
+// test display_list and check return value of the function with the pointer at the end 
+// and the middle 
+TEST(display_list_test,test_normal_pointer_not_at_start)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	char str2[10]="first";
+	char str3[10]="second";
+	char str4[10]="third";
+	char str5[10]="fourth";
+	char str6[10]="fifth";
+	int i;
+
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->previous = NULL;
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->previous = head;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->previous = head->next;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
+	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->index=4;
+	head->next->next->next->next->data=str4;
+	head->next->next->next->next->previous = head->next->next->next;
+	head->next->next->next->next->next = NULL;
+
+	// test pointer in the middle
+	i = display_list(head->next->next);
+	EXPECT_EQ(i, 5);
+
+	// test pointer at the end
+	i = display_list(head->next->next->next->next);
+	EXPECT_EQ(i, 5);
+}
+
 
 /***************************************************************************/
 
@@ -443,8 +495,87 @@ TEST(search_from_list_test,test_special_cases)
 }
 
 /*-------------------------------------------------------------------------*/
+// test different start pointers 
+TEST(search_from_list_test,test_different_start_pointer)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	char str2[10]="hero";
+	char str3[40]="sinnvolle?";
+	char str4[40]="Kartoffelbrei";
+	char str5[40]="Pfiff the magic dragon!";
+	char str6[40]="unpacking";
+	int i;
+
+	linked_list *found;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+	head->previous = NULL;
+
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->previous = head;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->previous = head->next;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
+	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->index=4;
+	head->next->next->next->next->data=str4;
+	head->next->next->next->next->previous = head->next->next->next;
+	head->next->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->next->index=5;
+	head->next->next->next->next->next->data=str5;
+	head->next->next->next->next->next->previous = head->next->next->next->next;
+	head->next->next->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->next->next->index=6;
+	head->next->next->next->next->next->next->data=str6;
+	head->next->next->next->next->next->next->previous = head->next->next->next->next->next;
+	head->next->next->next->next->next->next->next = NULL;
+
+
+	// tests with diffret pointer start positions 
+	found=search_from_list(head->next->next,str3);
+	EXPECT_EQ(found->index, 3);
+	EXPECT_STREQ(str3,found->data);
+
+	found=search_from_list(head->next->next->next,str2);
+	EXPECT_EQ(found->index, 2);
+	EXPECT_STREQ(str2,found->data);
+
+	found=search_from_list(head,str);
+	EXPECT_EQ(found->index, 0);
+	EXPECT_STREQ(str,found->data);
+
+	found=search_from_list(head->next->next->next->next->next,str4);
+	EXPECT_EQ(found->index, 4);
+	EXPECT_STREQ(str4,found->data);
+
+	found=search_from_list(head->next->next->next->next->next->next,str1);
+	EXPECT_EQ(found->index, 1);
+	EXPECT_STREQ(str1,found->data);
+
+	found=search_from_list(head->next,(char*)"not found");
+	EXPECT_EQ((int*)found, (int*)NULL);
+}
+
+/*-------------------------------------------------------------------------*/
 // test return value of search_from_list if value was not found
-TEST(search_from_list,test_not_found)
+TEST(search_from_list_test,test_not_found)
 {
 	char str[15]="List Start";
 
@@ -465,7 +596,7 @@ TEST(search_from_list,test_not_found)
 
 /*-------------------------------------------------------------------------*/
 // test return value of search_from_list if head or string are nullpointer 
-TEST(search_from_list,test_nullpointer)
+TEST(search_from_list_test,test_nullpointer)
 {
 	char str[15]="List Start";
 
@@ -513,23 +644,26 @@ TEST(delete_from_list_test,test_normal)
 	head->index=0;
 	head->data=str;
 	head->previous = NULL;
-
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
 	head->next->data=str1;
+	head->next->previous = head;
 	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->index=2;
 	head->next->next->data=str2;
+	head->next->next->previous = head->next;
 	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->index=3;
 	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
 	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->next->index=4;
 	head->next->next->next->next->data=str4;
+	head->next->next->next->next->previous = head->next->next->next;
 	head->next->next->next->next->next = NULL;
 
 	// check if str2 is on pos index 2
@@ -541,10 +675,61 @@ TEST(delete_from_list_test,test_normal)
 	// we delete one, so there a still 4 elements left in the list
 	EXPECT_EQ(i,4);
 
-	printf("%d : %s \n", head->index, head->data);
-	printf("%d : %s \n", head->next->index, head->next->data);
-	printf("%d : %s \n", head->next->next->index, head->next->next->data);
-	printf("%d : %s \n", head->next->next->next->index, head->next->next->next->data);
+}
+
+/*-------------------------------------------------------------------------*/
+// test delete_from_list, with pointer to an element in the middle
+TEST(delete_from_list_test,test_pointer_not_at_start)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	char str2[10]="first";
+	char str3[10]="second";
+	char str4[10]="third";
+	char str5[10]="fourth";
+	char str6[10]="fifth";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->previous = NULL;
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->previous = head;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->previous = head->next;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
+	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->index=4;
+	head->next->next->next->next->data=str4;
+	head->next->next->next->next->previous = head->next->next->next;
+	head->next->next->next->next->next = NULL;
+
+	// check if str2 is on pos index 2
+	EXPECT_STREQ(head->next->next->data,str2);
+
+	i = delete_from_list(head->next->next->next,2);
+	// after deleting index 2, str3 should now be on the pos of index 2
+	EXPECT_STREQ(head->next->next->data,str3);
+	// we delete one, so there a still 4 elements left in the list
+	EXPECT_EQ(i,4);
+
+//printf("%s\n", head->data);
+//printf("%s\n", head->next->data);
+//printf("%s\n", head->next->next->data);
+//printf("%s\n", head->next->next->next->data);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -651,30 +836,37 @@ TEST(delete_from_list_test,multi) {
 
 	head->next->index=1;
 	head->next->data=str1;
-	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+	head->next->previous = head;
+head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->index=2;
 	head->next->next->data=str2;
+	head->next->next->previous = head->next;
 	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->index=3;
 	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
 	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->next->index=4;
 	head->next->next->next->next->data=str4;
+	head->next->next->next->next->previous = head->next->next->next;
 	head->next->next->next->next->next =  (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->next->next->index=5;
 	head->next->next->next->next->next->data=str5;
+	head->next->next->next->next->next->previous = head->next->next->next->next;
 	head->next->next->next->next->next->next =  (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->next->next->next->index=6;
 	head->next->next->next->next->next->next->data=str6;
+	head->next->next->next->next->next->next->previous = head->next->next->next->next->next;
 	head->next->next->next->next->next->next->next =  (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->next->next->next->next->index=7;
 	head->next->next->next->next->next->next->next->data=str7;
+	head->next->next->next->next->next->next->next->previous = head->next->next->next->next->next->next;
 	head->next->next->next->next->next->next->next->next = NULL; 
 
 	// check indexes 
@@ -748,7 +940,7 @@ TEST(delete_from_list_test,test_index_out_of_bounds)
 // test delete_from_list if we delete the last element 
 TEST(delete_from_list_test,test_delete_last_elements)
 {
-	char str[15]="List Start";
+	char str[15]="DEBUG";
 	char str1[10]="zero";
 	char str2[10]="first";
 	char str3[10]="second";
@@ -762,14 +954,14 @@ TEST(delete_from_list_test,test_delete_last_elements)
 	head->index=0;
 	head->data=str;
 	head->previous = NULL;
-
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
 	head->next->data=str1;
+	head->next->previous = head;
 	head->next->next = NULL;
 
-	// delete the first element, expect lenght of 0
+	// delete the first element, expect rest-lenght of 1
 	i = delete_from_list(head,1);
 
 	// there is still the head with data so we expect 1
@@ -870,6 +1062,56 @@ TEST(empty_list_test,test_single_element_in_list)
 }
 
 /*-------------------------------------------------------------------------*/
+// test empty_list pointer somewhere in the middle
+TEST(empty_list_test,test_pointer_not_at_start)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	char str2[10]="first";
+	char str3[10]="second";
+	char str4[10]="third";
+	char str5[10]="fourth";
+	char str6[10]="fifth";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->previous = NULL;
+
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->previous = head;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->previous = head->next;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
+	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->index=4;
+	head->next->next->next->next->data=str4;
+	head->next->next->next->next->previous = head->next->next->next;
+	head->next->next->next->next->next = NULL;
+
+	// call empty_list
+	i = empty_list(head->next->next);
+	// after empty_list call check the amount of items which were in the list
+	EXPECT_EQ(i,4);
+	// check if head ->next is null
+	EXPECT_EQ((linked_list*)head->next, (linked_list*)NULL);
+}
+
+
+/*-------------------------------------------------------------------------*/
 // test empty_list with only the head 
 TEST(empty_list_test,test_only_head)
 {
@@ -920,18 +1162,22 @@ TEST(swap_items_test,test_normal)
 
 	head->next->index=1;
 	head->next->data=str1;
+	head->next->previous = head;
 	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->index=2;
 	head->next->next->data=str2;
+	head->next->next->previous = head->next;
 	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->index=3;
 	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
 	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->next->index=4;
 	head->next->next->next->next->data=str4;
+	head->next->next->next->next->previous = head->next->next->next;
 	head->next->next->next->next->next = NULL;
 
 	// check the strings of the listelements we want to change
@@ -976,18 +1222,22 @@ TEST(swap_items_test,test_swap_different_length)
 
 	head->next->index=1;
 	head->next->data=str1;
+	head->next->previous = head;
 	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->index=2;
 	head->next->next->data=str2;
+	head->next->next->previous = head->next;
 	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->index=3;
 	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
 	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->next->index=4;
 	head->next->next->next->next->data=str4;
+	head->next->next->next->next->previous = head->next->next->next;
 	head->next->next->next->next->next = NULL;
 
 	// check the strings of the listelements we want to change
@@ -1144,24 +1394,28 @@ TEST(swap_items_test,test_swap_different_linked_lists)
 
 	head->next->index=1;
 	head->next->data=str1;
+	head->next->previous = head;
 	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->index=2;
 	head->next->next->data=str2;
+	head->next->next->previous = head->next;
 	head->next->next->next = NULL;
 
+	// declare a second list
 	another_head->index=0;
 	another_head->data=str3;
 	another_head->previous = NULL;
-
 	another_head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	another_head->next->index=1;
 	another_head->next->data=str4;
+	another_head->next->previous = another_head;
 	another_head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	another_head->next->next->index=2;
 	another_head->next->next->data=str5;
+	another_head->next->previous = another_head->next;
 	another_head->next->next->next = NULL;
 
 
@@ -1180,6 +1434,7 @@ TEST(swap_items_test,test_swap_different_linked_lists)
 /***************************************************************************/
 /*                 Test for sort_list                                      */
 /***************************************************************************/
+
 // test sort_list without expecting errors
 TEST(sort_list_test,test_normal)
 {
@@ -1200,18 +1455,22 @@ TEST(sort_list_test,test_normal)
 
 	head->next->index=1;
 	head->next->data=str1;
+	head->next->previous = head;
 	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->index=2;
 	head->next->next->data=str2;
+	head->next->next->previous = head->next;
 	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->index=3;
 	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
 	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->next->index=4;
 	head->next->next->next->next->data=str4;
+	head->next->next->next->next->previous = head->next->next->next;
 	head->next->next->next->next->next = NULL;
 
 	i = sort_list(head);
@@ -1240,23 +1499,26 @@ TEST(sort_list_test,test_special_cases)
 	head->index=0;
 	head->data=str;
 	head->previous = NULL;
-
 	head->next=(struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->index=1;
 	head->next->data=str1;
+	head->next->previous = head;
 	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->index=2;
 	head->next->next->data=str2;
+	head->next->next->previous = head->next;
 	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->index=3;
 	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
 	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next->next->next->next->index=4;
 	head->next->next->next->next->data=str4;
+	head->next->next->next->next->previous = head->next->next->next;
 	head->next->next->next->next->next = NULL;
 
 	i = sort_list(head);
@@ -1268,6 +1530,57 @@ TEST(sort_list_test,test_special_cases)
 	EXPECT_STREQ(head->next->next->next->data, str3);	
 	EXPECT_STREQ(head->next->next->next->next->data, str4);	
 }
+
+/*-------------------------------------------------------------------------*/
+// test sort_list with pointer somewhere in the middle
+TEST(sort_list_test,test_pointer_not_at_start)
+{
+	char str[15]="list Start";
+	char str1[10]="hero";
+	char str2[10]="apple";
+	char str3[10]="second";
+	char str4[10]="third";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->previous = NULL;
+
+	head->next=(struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->index=1;
+	head->next->data=str1;
+	head->next->previous = head;
+	head->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->index=2;
+	head->next->next->data=str2;
+	head->next->next->previous = head->next;
+	head->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->index=3;
+	head->next->next->next->data=str3;
+	head->next->next->next->previous = head->next->next;
+	head->next->next->next->next = (struct linked_list*) malloc(sizeof(linked_list));
+
+	head->next->next->next->next->index=4;
+	head->next->next->next->next->data=str4;
+	head->next->next->next->next->previous = head->next->next->next;
+	head->next->next->next->next->next = NULL;
+
+	i = sort_list(head->next->next->next);
+	// check if i euqals 0 ok
+	EXPECT_EQ(i, 0);	
+	EXPECT_STREQ(head->data, str2);	
+	EXPECT_STREQ(head->next->data, str1);	
+	EXPECT_STREQ(head->next->next->data, str);	
+	EXPECT_STREQ(head->next->next->next->data, str3);	
+	EXPECT_STREQ(head->next->next->next->next->data, str4);	
+}
+
+
 /*-------------------------------------------------------------------------*/
 // test sort_list in case of a nullpointer
 TEST(sort_list_test,test_nullpointer)
@@ -1331,6 +1644,29 @@ TEST(linkedlist_status_test,test_normal)
 }
 
 /*-------------------------------------------------------------------------*/
+// test linkedlist_status only with head 
+TEST(linkedlist_status_test,test_only_head)
+{
+	char str[15]="List Start";
+	char str1[10]="zero";
+	int i;
+
+	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
+
+	head->index=0;
+	head->data=str;
+	head->previous = NULL;
+
+	head->next= NULL;
+
+	// check status
+	i = linkedlist_status(head);
+
+	// we expect 1 
+	EXPECT_EQ(i , 1);
+}
+
+/*-------------------------------------------------------------------------*/
 // test linkedlist_status in case of a nullpointer
 TEST(linkedlist_status_test,test_nullpointer)
 {
@@ -1342,7 +1678,7 @@ TEST(linkedlist_status_test,test_nullpointer)
 	i = linkedlist_status(head);
 
 	// we expect an empty list so 0 
-	EXPECT_EQ(i , 0);
+	EXPECT_EQ(i , -1);
 }
 
 
@@ -1355,7 +1691,7 @@ TEST(linkedlist_status_test,test_nullpointer)
 /***************************************************************************/
 
 
-TEST(combination_test,display_list_add_to_list_test)
+TEST(combination_test,DISABLED_display_list_add_to_list_test)
 {
 	int result;
 	char str[15]="List Start";

@@ -76,6 +76,7 @@ int display_item(linked_list *ll)
 // return: number of elements in list
 int display_list(linked_list *ll)
 {
+	// now we are at the beginning of the list
 
 	linked_list *tmp = ll;
 	if(ll == NULL)
@@ -83,6 +84,14 @@ int display_list(linked_list *ll)
 		// list does not exits therefore I return -1
 		return -1;
 	}
+
+	// check if ll is the head element
+	// if not got to head element
+	while(ll->previous != NULL)
+	{
+		ll = ll -> previous;
+	}
+
 	while(ll != NULL)
 	{
 		printf("\n----------------------------------\n");
@@ -102,35 +111,34 @@ int display_list(linked_list *ll)
 
 linked_list * search_from_list(linked_list *ll, char *s)
 {
+
+	int length_of_data_string;
+	int length_of_given_string;
+	int i = 0;
+
 	// listobject or string doesn't exist
 	if(ll == NULL || s == NULL)
 	{
 		return NULL;
 	}
 
-	int length_of_data_string;
-	int length_of_given_string;
-	int i = 0;
-
-	// count both strings
-	for(length_of_data_string = 0; ll->data[length_of_data_string] != '\0'; length_of_data_string++);
-	for(length_of_given_string = 0; s[length_of_given_string] != '\0'; length_of_given_string++);
-
-	if(length_of_data_string != length_of_given_string)
+	// check if ll is the head element
+	// if not got to head element
+	while(ll->previous != NULL)
 	{
-		// check  if the lenght of both string is the same
-		// if not I don't need to compare the strings
-		return search_from_list(ll->next, s);
+		ll = ll -> previous;
 	}
 
-	while( i < length_of_given_string)
+	while(ll != NULL)
 	{
-		if(ll -> data[i] != s[i])
+		// use compare_strings function to determine if the strings are the same
+		if(compare_strings(ll->data, s) == 0)
 		{
-			return search_from_list(ll->next, s);
+			return ll;
 		}
-		i++;
+		ll = ll->next;
 	}
+
 	// if I get to this point, the data and s should be the same
 	return ll;
 }
@@ -150,6 +158,14 @@ int delete_from_list(linked_list *ll, int index)
 		return -1;
 	}
 
+	// check if ll is the head element
+	// if not got to head element
+	while(ll->previous != NULL)
+	{
+		ll = ll -> previous;
+	}
+
+
 
 	last = ll;
 	while(ll->next != NULL)
@@ -157,19 +173,23 @@ int delete_from_list(linked_list *ll, int index)
 		if(ll->index == index)
 		{	
 			last ->next = ll->next;
+
 			free(ll);
+
 			ll = last->next;
-			while(ll -> next != NULL)
+			ll->previous = last;
+			while(ll->next != NULL)
 			{
-				ll->index = last -> index + 1;
-				last = ll;
+				ll->index = ll->previous->index +1;
 				ll = ll->next;
 			}
+			
 			// don't forget the last one
-			ll->index = last -> index + 1;
+			ll->index = ll->previous -> index + 1;
 			// list got new indexes
+			 
 			// return the end index +1 (don't forget the value at 0)
-			return ll -> index + 1; 
+			return linkedlist_status(ll); 
 		}
 		last = ll;
 		ll = ll->next;
@@ -180,7 +200,7 @@ int delete_from_list(linked_list *ll, int index)
 	{
 		last -> next = NULL;
 		free(ll);
-		return last->index + 1;
+		return linkedlist_status(last);
 	}
 
 	// we didn't find the index, bail out with -1
@@ -194,11 +214,20 @@ int empty_list(linked_list *ll)
 	linked_list *tmp;
 	linked_list *last;
 	int last_index;
+
 	// list does not exist
 	if(ll == NULL)
 	{
 		return -1;
 	}
+
+	// check if ll is the head element
+	// if not got to head element
+	while(ll->previous != NULL)
+	{
+		ll = ll -> previous;
+	}
+
 
 	//first count items in list
 	tmp = ll;
@@ -278,15 +307,25 @@ int swap_items(linked_list *f, linked_list *s)
 // else ascii numbers will be used and could differ the result
 int sort_list(linked_list*ll)
 {
-	linked_list* outer_iterator = ll;	
-	linked_list* inner_iterator = ll;
-
+	linked_list* outer_iterator;
+	linked_list* inner_iterator;
 	int comp;
+
 	// list does not exist
 	if(ll == NULL)
 	{
 		return -1;
 	}
+
+	// check if ll is the head element
+	// if not got to head element
+	while(ll->previous != NULL)
+	{
+		ll = ll -> previous;
+	}
+
+	outer_iterator = ll;
+	inner_iterator = ll;
 
 	while(outer_iterator != NULL)
 	{
@@ -308,6 +347,27 @@ int sort_list(linked_list*ll)
 	// when we are here everything worked fine and we return 0
 	return 0;
 
+}
+// will count the number of elements in the list
+// return value: amount
+int linkedlist_status(linked_list *ll)
+{
+	// list does not exits return -1
+	if(ll == NULL)
+	{
+		return -1;
+	}
+
+
+	if(ll->next == NULL)
+	{
+		// if ll->next is null return the index +1 because of the value at index 0
+
+		return ll->index+1;
+	}
+
+	// if ll->next is not null call the function recursive with ll->next as ll
+	return linkedlist_status(ll->next);
 }
 
 // check if 2 given strings are the same return 1 if the first is greater than the second
@@ -344,24 +404,4 @@ int compare_strings(char* f, char* s)
 	return 0; // strings are the same
 }
 
-// will count the number of elements in the list
-// return value: amount
-int linkedlist_status(linked_list *ll)
-{
-	// list does not exits return -1
-	if(ll == NULL)
-	{
-		return 0;
-	}
-	if(ll->next == NULL)
-	{
-		// if ll->next is null return the index +1 because of the value at index 0
- 
-		return ll->index+1;
-	}
 
-else{
-		// if ll->next is not null call the function recursive with ll->next as ll
-		return linkedlist_status(ll->next);
-	}
-}
