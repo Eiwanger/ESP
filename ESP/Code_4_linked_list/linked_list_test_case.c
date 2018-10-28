@@ -3,8 +3,6 @@
 
 
 
-
-
 /***************************************************************************/
 /*                 Test for add_to_list function                           */
 /***************************************************************************/
@@ -56,7 +54,6 @@ TEST(add_to_list_test,test_normal) {
 }
 
 /*-------------------------------------------------------------------------*/
-
 // test if the function returns -1 in case the head is null
 TEST(add_to_list_test, test_head_equals_null)
 {
@@ -73,7 +70,6 @@ TEST(add_to_list_test, test_head_equals_null)
 }
 
 /*-------------------------------------------------------------------------*/
-
 // test if the function returns -1 when the string is null
 TEST(add_to_list_test, test_string_equals_null)
 {
@@ -94,7 +90,6 @@ TEST(add_to_list_test, test_string_equals_null)
 }
 
 /*-------------------------------------------------------------------------*/
-
 // test if the function works well if the parameter is the last pointer 
 TEST(add_to_list_test, test_pointer_to_end)
 {
@@ -135,11 +130,7 @@ TEST(add_to_list_test, test_pointer_to_end)
 	// check if the index is right 
 	EXPECT_EQ(i, 4);
 	EXPECT_EQ((linked_list*)head->next->next->next, (linked_list*)head->next->next->next->next->previous);
-
-
 }
-
-
 /***************************************************************************/
 
 
@@ -168,7 +159,6 @@ TEST(display_item_test, test_normal)
 }
 
 /*-------------------------------------------------------------------------*/
-
 // test return value ok of a listelement in the middle of a list
 TEST(display_item_test, test_return_ok)
 {
@@ -205,12 +195,10 @@ TEST(display_item_test, test_return_ok)
 	head->next->next->next->next->data=str4;
 	head->next->next->next->next->next = NULL;
 
-	printf("%s\n", str4);
 	i = display_item(head->next->next->next->next);
 
 	EXPECT_EQ(i, 0);
 }
-
 
 /*-------------------------------------------------------------------------*/
 // test the display_item function if the pointer is null
@@ -232,7 +220,6 @@ TEST(display_item_test, test_nullpointer)
 
 	EXPECT_EQ(i, -1);
 }
-
 /***************************************************************************/
 
 
@@ -240,6 +227,7 @@ TEST(display_item_test, test_nullpointer)
 /*                 Test for display_list function                          */
 /***************************************************************************/
 
+// test display_list with an empty list 
 TEST(display_list_test,test_empty)
 {
 	int result;
@@ -275,7 +263,6 @@ TEST(display_list_test,test_nullpointer)
 	EXPECT_EQ(result, -1);
 
 }
-
 
 /*-------------------------------------------------------------------------*/
 // test display_list and check return value of the function with the pointer at start
@@ -378,8 +365,6 @@ TEST(display_list_test,test_normal_pointer_not_at_start)
 	i = display_list(head->next->next->next->next);
 	EXPECT_EQ(i, 5);
 }
-
-
 /***************************************************************************/
 
 
@@ -619,7 +604,6 @@ TEST(search_from_list_test,test_nullpointer)
 	found=search_from_list(head,(char*)NULL);
 	EXPECT_EQ((int*)found, (int*)NULL);
 }
-
 /***************************************************************************/
 
 
@@ -725,11 +709,6 @@ TEST(delete_from_list_test,test_pointer_not_at_start)
 	EXPECT_STREQ(head->next->next->data,str3);
 	// we delete one, so there a still 4 elements left in the list
 	EXPECT_EQ(i,4);
-
-//printf("%s\n", head->data);
-//printf("%s\n", head->next->data);
-//printf("%s\n", head->next->next->data);
-//printf("%s\n", head->next->next->next->data);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -1110,7 +1089,6 @@ TEST(empty_list_test,test_pointer_not_at_start)
 	EXPECT_EQ((linked_list*)head->next, (linked_list*)NULL);
 }
 
-
 /*-------------------------------------------------------------------------*/
 // test empty_list with only the head 
 TEST(empty_list_test,test_only_head)
@@ -1198,8 +1176,8 @@ TEST(swap_items_test,test_normal)
 	EXPECT_STREQ(head->next->next->next->data, str2);
 	EXPECT_STREQ(head->next->data, str3);
 }
-/*-------------------------------------------------------------------------*/
 
+/*-------------------------------------------------------------------------*/
 // test swap_items with strings which differ in legth expecting 0 for OK 
 TEST(swap_items_test,test_swap_different_length)
 {
@@ -1253,8 +1231,8 @@ TEST(swap_items_test,test_swap_different_length)
 	EXPECT_STREQ(head->next->data, str2);
 	EXPECT_STREQ(head->next->next->data, str1);
 }
-/*-------------------------------------------------------------------------*/
 
+/*-------------------------------------------------------------------------*/
 // test swap_items expecting -1 for error 
 TEST(swap_items_test,test_nullpointer)
 {
@@ -1369,8 +1347,8 @@ TEST(swap_items_test,test_swap_head)
 	EXPECT_STREQ(head->data, str1);
 	EXPECT_STREQ(head->next->data, str);
 }
-/*-------------------------------------------------------------------------*/
 
+/*-------------------------------------------------------------------------*/
 // test swap_items with strings which are in different linked lists
 TEST(swap_items_test,test_swap_different_linked_lists)
 {
@@ -1427,7 +1405,6 @@ TEST(swap_items_test,test_swap_different_linked_lists)
 	i = swap_items(another_head->next, head->next);
 	EXPECT_EQ(i,-1);
 }
-
 /***************************************************************************/
 
 
@@ -1595,13 +1572,13 @@ TEST(sort_list_test,test_nullpointer)
 	EXPECT_EQ(i, -1);	
 
 }
-
 /***************************************************************************/
 
 
 /***************************************************************************/
 /*                 Test for linkedlist_status                              */
 /***************************************************************************/
+
 // test linkedlist_status without expecting errors
 TEST(linkedlist_status_test,test_normal)
 {
@@ -1680,17 +1657,14 @@ TEST(linkedlist_status_test,test_nullpointer)
 	// we expect an empty list so 0 
 	EXPECT_EQ(i , -1);
 }
-
-
 /***************************************************************************/
-
 
 
 /***************************************************************************/
 /*                 Test for combined functions                             */
 /***************************************************************************/
 
-
+// test a combination of two functions
 TEST(combination_test,DISABLED_display_list_add_to_list_test)
 {
 	int result;
@@ -1750,9 +1724,11 @@ TEST(combination_test,DISABLED_display_list_add_to_list_test)
 
 }
 
+
 /***************************************************************************/
-/*                 Test for compare_strings                                      */
+/*                 Test for compare_strings                                */
 /***************************************************************************/
+
 // test my own function compare_strings for the case of a nullpointer
 TEST(compare_strings_test, test_nullpointer)
 {
@@ -1768,8 +1744,8 @@ TEST(compare_strings_test, test_nullpointer)
 	i = compare_strings(s, f);
 	EXPECT_EQ(i, 0);
 }
-/*-------------------------------------------------------------------------*/
 
+/*-------------------------------------------------------------------------*/
 // test my own function compare_strings for the case of a nullpointer
 TEST(compare_strings_test, test_normal_and_special_cases)
 {
@@ -1815,3 +1791,4 @@ TEST(compare_strings_test, test_normal_and_special_cases)
 	i = compare_strings(str8, str1);
 	EXPECT_EQ(i, -1);
 }
+/***************************************************************************/
