@@ -1,12 +1,30 @@
-language: c
+#sudo: false
+dist: trusty
+language: cpp
+os:
+  - linux
 compiler:
   - gcc
-  - std=c++11
-os: linux
-dist: trusty
+before_install:
+# /usr/bin/gcc is 4.6 always, but gcc-X.Y is available.
+- if [[ $CXX = g++ ]]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.5 # not sure why we needed this
+  packages:
+    - gcc-4.9
+    - g++-4.9
+#language: c
+
+#compiler:
+#  - gcc
+#os: linux
+#dist: trusty
 env:
    - GTEST_DIR=/home/travis/build/Eiwanger/ESP/googletest/googletest
-before_install:
+install:
  - sudo apt-get -qq update
  - pwd
  - ls -al
