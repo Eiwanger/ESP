@@ -1,6 +1,7 @@
 language: c
 compiler:
   - gcc
+  - std=c++11
 os: linux
 dist: trusty
 env:
