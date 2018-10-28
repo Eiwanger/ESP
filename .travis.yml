@@ -3,15 +3,9 @@ compiler:
   - gcc
 os: linux
 dist: trusty
- addons:
-   apt:
-      sources:
-        - ubuntu-toolchain-r-test
-      packages:
-        - g++-7
  env:
-    - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
     - GTEST_DIR=/home/travis/build/Eiwanger/ESP/googletest/googletest
+
 before_install:
  - sudo apt-get -qq update
  - eval "${MATRIX_EVAL}"
