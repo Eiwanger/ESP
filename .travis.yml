@@ -26,6 +26,7 @@ before_install:
  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
  - sudo apt-get update -q
  - sudo apt-get install gcc-4.9 -y
+ - std=gnu++11
  - cd /usr/src/gtest 
  - sudo cmake .
  - sudo make
