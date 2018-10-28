@@ -2,21 +2,19 @@ language: c
 compiler:
   - gcc
 os: linux
-# works on Precise and Trusty
-    - os: linux
-      addons:
-        apt:
+ addons:
+    apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - GTEST_DIR=/home/travis/build/Eiwanger/ESP/googletest/googletest
 before_install:
     - eval "${MATRIX_EVAL}"
+
 dist: trusty
-env:
- - GTEST_DIR=/home/travis/build/Eiwanger/ESP/googletest/googletest
 
 before_install:
  - sudo apt-get -qq update
