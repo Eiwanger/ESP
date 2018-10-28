@@ -23,7 +23,7 @@ before_install:
  - ls -la ${GTEST_DIR} 
  - sudo apt-get install libgtest-dev
  - sudo apt-get install cmake 
- - sudo add-get-repository ppa:ubuntu-toolchain-r/test
+ - sudo add-apt-repository ppa:ubuntu-toolchain-r/test
  - sudo apt-get update
  - sudo apt-get install g++-4.9
  - cd /usr/src/gtest 
