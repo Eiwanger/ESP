@@ -15,15 +15,6 @@ before_install:
 env:
    - GTEST_DIR=/home/travis/build/Eiwanger/ESP/googletest/googletest
 before_install:
-# /usr/bin/gcc is 4.6 always, but gcc-X.Y is available.
-#- if [[ $CXX = g++ ]]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-4.9
-    - g++-4.9
 
  - sudo apt-get -qq update
  - pwd
@@ -32,6 +23,9 @@ addons:
  - ls -la ${GTEST_DIR} 
  - sudo apt-get install libgtest-dev
  - sudo apt-get install cmake 
+ - sudo add-get-repository ppa:ubuntu-toolchain-r/test
+ - sudo apt-get update
+ - sudo apt-get install g++-4.9
  - cd /usr/src/gtest 
  - sudo cmake .
  - sudo make
