@@ -46,6 +46,7 @@ int add_to_list(linked_list *ll, char*s)
 	new_box -> index = ll -> index + 1;
 	ll -> next = new_box;
 
+	// set the previous pointer
 	new_box -> previous = ll;
 
 	return new_box -> index;
@@ -76,7 +77,6 @@ int display_item(linked_list *ll)
 // return: number of elements in list
 int display_list(linked_list *ll)
 {
-	// now we are at the beginning of the list
 
 	linked_list *tmp = ll;
 	if(ll == NULL)
@@ -91,6 +91,7 @@ int display_list(linked_list *ll)
 	{
 		ll = ll -> previous;
 	}
+	// now we are at the beginning of the list
 
 	while(ll != NULL)
 	{
@@ -148,7 +149,7 @@ int delete_from_list(linked_list *ll, int index)
 	// return -1 if list doesn't exist or is empty
 	// or someone tries to remove the head which is not possible without a 
 	// diffrent return type or parametertype of linked_list**
-	if(ll == NULL || index == 0)
+	if(ll == NULL || index <= 0)
 	{
 		return -1;
 	}

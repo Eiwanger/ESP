@@ -3,6 +3,14 @@
 
 
 
+// this tests implement bidirecual lists
+// in linked_list.c and linked_list.h is a new function compare_strings declared
+// to disable the testcases for my own compare_strings function
+// delete the uncomment the line below
+
+//#define compare_strings_test DISABLED_compare_strings_test
+
+
 /***************************************************************************/
 /*                 Test for add_to_list function                           */
 /***************************************************************************/
@@ -913,6 +921,8 @@ TEST(delete_from_list_test,test_index_out_of_bounds)
 	i = delete_from_list(head,400);
 	// after deleting index 2, str3 should now be on the pos of index 2
 	EXPECT_EQ(i,-1);
+
+	i = delete_from_list(head, -1);
 }
 
 /*-------------------------------------------------------------------------*/
