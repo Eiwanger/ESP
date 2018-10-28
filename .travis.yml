@@ -6,32 +6,6 @@ os:
 compiler:
   - gcc
 before_install:
-- sudo apt-get -qq update
- - pwd
- - ls -al
- - git clone https://github.com/google/googletest.git
- - sudo apt-get install -y valgrind
- - ls -al
- - ls -la ${GTEST_DIR} 
- - sudo apt-get install libgtest-dev
- - sudo apt-get install cmake 
- - cd /usr/src/gtest 
- - ls -al
- - sudo cmake .
- - sudo make
- - sudo mv libg* /usr/lib/
- - cd /usr/lib/
- - ls -la
-# /usr/bin/gcc is 4.6 always, but gcc-X.Y is available.
-- if [[ $CXX = g++ ]]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.5 # not sure why we needed this
-  packages:
-    - gcc-4.9
-    - g++-4.9
 #language: c
 
 #compiler:
@@ -40,8 +14,31 @@ addons:
 #dist: trusty
 env:
    - GTEST_DIR=/home/travis/build/Eiwanger/ESP/googletest/googletest
-install:
-  - which valgrind
+before_install:
+# /usr/bin/gcc is 4.6 always, but gcc-X.Y is available.
+#- if [[ $CXX = g++ ]]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.9
+    - g++-4.9
+
+ - sudo apt-get -qq update
+ - pwd
+ - git clone https://github.com/google/googletest.git
+ - sudo apt-get install -y valgrind
+ - ls -la ${GTEST_DIR} 
+ - sudo apt-get install libgtest-dev
+ - sudo apt-get install cmake 
+ - cd /usr/src/gtest 
+ - sudo cmake .
+ - sudo make
+ - sudo mv libg* /usr/lib/
+ - cd /usr/lib/
+ - ls -la
+ - which valgrind
  - cd "${TRAVIS_BUILD_DIR}"
  - cd ESP/Code_4_linked_list/
  - g++ -c -isystem ${GTEST_DIR}/include -I ${GTEST_DIR} Gtest_main.c 
