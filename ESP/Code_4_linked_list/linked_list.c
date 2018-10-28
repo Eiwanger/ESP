@@ -111,11 +111,6 @@ int display_list(linked_list *ll)
 
 linked_list * search_from_list(linked_list *ll, char *s)
 {
-
-	int length_of_data_string;
-	int length_of_given_string;
-	int i = 0;
-
 	// listobject or string doesn't exist
 	if(ll == NULL || s == NULL)
 	{
@@ -325,6 +320,8 @@ int sort_list(linked_list*ll)
 	}
 
 	outer_iterator = ll;
+
+
 	inner_iterator = ll;
 
 	while(outer_iterator != NULL)
