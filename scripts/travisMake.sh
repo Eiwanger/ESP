@@ -1,7 +1,7 @@
 
 cd /home/travis/build/Eiwanger/ESP/ESP/Code_4_linked_list
-g++ -isystem -std=c++11 ${GTEST_DIR}/include -I${GTEST_DIR} -pthread -c ${GTEST_DIR}/src/gtest-all.cc
-ar -rv libgtest.a gtest-all.o
+#g++ -isystem ${GTEST_DIR}/include -std=c++11 -I${GTEST_DIR} -pthread -c ${GTEST_DIR}/src/gtest-all.cc
+#ar -rv libgtest.a gtest-all.o
 
 
 
