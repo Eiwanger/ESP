@@ -7,7 +7,7 @@ before_install:
  - sudo apt-get -qq update
 # - cd $
  - git clone https://github.com/google/googletest.git ~/travis/build/Eiwanger/ESP
- - cd /travis/build/Eiwanger/googletest/googletest
+ - cd ~/travis/build/Eiwanger/googletest/googletest
  - sudo cmake .
  - sudo make
  - cd ~/travis/build/Eiwanger/ESP/ESP/Code_4_linked_list/
