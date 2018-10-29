@@ -106,8 +106,6 @@ TEST(add_to_list_test, test_pointer_to_end)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));
@@ -175,8 +173,6 @@ TEST(display_item_test, test_return_ok)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -260,7 +256,6 @@ TEST(display_list_test,test_empty)
 TEST(display_list_test,test_nullpointer)
 {
 	int result;
-	char str[15]="List Start";
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
 	head = NULL;
@@ -281,8 +276,6 @@ TEST(display_list_test,test_normal_pointer_at_start)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 
@@ -333,8 +326,6 @@ TEST(display_list_test,test_normal_pointer_not_at_start)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 
@@ -424,7 +415,6 @@ TEST(search_from_list_test,test_special_cases)
 	char str4[40]="This string tests special letters+";
 	char str5[40]="This string tests_special letters";
 	char str6[40]="This string tests-special letters";
-	int i;
 
 	linked_list *found;
 
@@ -498,7 +488,6 @@ TEST(search_from_list_test,test_different_start_pointer)
 	char str4[40]="Kartoffelbrei";
 	char str5[40]="Pfiff the magic dragon!";
 	char str6[40]="unpacking";
-	int i;
 
 	linked_list *found;
 
@@ -627,8 +616,6 @@ TEST(delete_from_list_test,test_normal)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -678,8 +665,6 @@ TEST(delete_from_list_test,test_pointer_not_at_start)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -723,9 +708,7 @@ TEST(delete_from_list_test,test_pointer_not_at_start)
 // test delete_from_list to return -1 in case of nullpointer
 TEST(delete_from_list_test,test_nullpointer)
 {
-	char str[15]="List Start";
 
-	linked_list *found;
 	int result;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -887,8 +870,6 @@ TEST(delete_from_list_test,test_index_out_of_bounds)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -931,11 +912,6 @@ TEST(delete_from_list_test,test_delete_last_elements)
 {
 	char str[15]="DEBUG";
 	char str1[10]="zero";
-	char str2[10]="first";
-	char str3[10]="second";
-	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -975,8 +951,6 @@ TEST(empty_list_test,test_normal)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -1059,8 +1033,6 @@ TEST(empty_list_test,test_pointer_not_at_start)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -1104,7 +1076,6 @@ TEST(empty_list_test,test_pointer_not_at_start)
 TEST(empty_list_test,test_only_head)
 {
 	char str[15]="List Start";
-	char str1[10]="zero";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -1136,8 +1107,6 @@ TEST(swap_items_test,test_normal)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -1196,8 +1165,6 @@ TEST(swap_items_test,test_swap_different_length)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -1316,8 +1283,6 @@ TEST(swap_items_test,test_swap_head)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -1368,7 +1333,6 @@ TEST(swap_items_test,test_swap_different_linked_lists)
 	char str3[10]="second";
 	char str4[10]="third";
 	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -1635,7 +1599,6 @@ TEST(linkedlist_status_test,test_normal)
 TEST(linkedlist_status_test,test_only_head)
 {
 	char str[15]="List Start";
-	char str1[10]="zero";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -1677,7 +1640,6 @@ TEST(linkedlist_status_test,test_nullpointer)
 // test a combination of two functions
 TEST(combination_test,DISABLED_display_list_add_to_list_test)
 {
-	int result;
 	char str[15]="List Start";
 	char str1[10]="zero";
 	char str2[10]="first";
@@ -1687,7 +1649,6 @@ TEST(combination_test,DISABLED_display_list_add_to_list_test)
 	char str6[10]="fifth";
 	int i;
 
-	linked_list *find;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
 
