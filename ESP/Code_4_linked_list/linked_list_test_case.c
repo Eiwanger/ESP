@@ -115,8 +115,6 @@ TEST(display_item_test, test_return_value)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -193,7 +191,6 @@ TEST(display_list_test,test_empty)
 TEST(display_list_test,test_nullpointer)
 {
 	int result;
-	char str[15]="List Start";
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
 	head = NULL;
@@ -207,15 +204,13 @@ TEST(display_list_test,test_nullpointer)
 
 /*-------------------------------------------------------------------------*/
 // test display_list and check return value of the function
-TEST(display_list,test_normal)
+TEST(display_list_test,test_normal)
 {
 	char str[15]="List Start";
 	char str1[10]="zero";
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 
@@ -241,13 +236,7 @@ TEST(display_list,test_normal)
 	head->next->next->next->next->data=str4;
 	head->next->next->next->next->next = NULL;
 
-	printf("Expect list looks like this\n");
-
-	printf("%s\n",str);	
-	printf("%s\n",str1);	
-	printf("%s\n",str2);	
-	printf("%s\n",str3);	
-
+	// call display_list and check the result
 	i = display_list(head);
 
 	EXPECT_EQ(i, 5);
@@ -302,7 +291,6 @@ TEST(search_from_list_test,test_special_cases)
 	char str4[40]="This string tests special letters+";
 	char str5[40]="This string tests_special letters";
 	char str6[40]="This string tests-special letters";
-	int i;
 
 	linked_list *found;
 
@@ -365,7 +353,7 @@ TEST(search_from_list_test,test_special_cases)
 
 /*-------------------------------------------------------------------------*/
 // test return value of search_from_list if value was not found
-TEST(search_from_list,test_not_found)
+TEST(search_from_list_test,test_not_found)
 {
 	char str[15]="List Start";
 
@@ -384,7 +372,7 @@ TEST(search_from_list,test_not_found)
 
 /*-------------------------------------------------------------------------*/
 // test return value of search_from_list if head or string are nullpointer 
-TEST(search_from_list,test_nullpointer)
+TEST(search_from_list_test,test_nullpointer)
 {
 	char str[15]="List Start";
 
@@ -405,6 +393,7 @@ TEST(search_from_list,test_nullpointer)
 	head->data = str;
 
 	found=search_from_list(head,(char*)NULL);
+	EXPECT_EQ((linked_list*)found,(linked_list*)NULL);
 }
 /***************************************************************************/
 
@@ -421,8 +410,6 @@ TEST(delete_from_list_test,test_normal)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -465,9 +452,6 @@ TEST(delete_from_list_test,test_normal)
 // test delete_from_list to return -1 in case of nullpointer
 TEST(delete_from_list_test,test_nullpointer)
 {
-	char str[15]="List Start";
-
-	linked_list *found;
 	int result;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -556,8 +540,6 @@ TEST(delete_from_list_test,test_index_out_of_bounds)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -599,11 +581,6 @@ TEST(delete_from_list_test,test_delete_last_elements)
 {
 	char str[15]="List Start";
 	char str1[10]="zero";
-	char str2[10]="first";
-	char str3[10]="second";
-	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -635,7 +612,6 @@ TEST(delete_from_list_test,test_delete_last_elements)
 // test the implemention of two functions display_list and add_to_list
 TEST(combination_test,DISABLED_display_list_add_to_list_test)
 {
-	int result;
 	char str[15]="List Start";
 	char str1[10]="zero";
 	char str2[10]="first";
@@ -644,8 +620,6 @@ TEST(combination_test,DISABLED_display_list_add_to_list_test)
 	char str5[10]="fourth";
 	char str6[10]="fifth";
 	int i;
-
-	linked_list *find;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
 
