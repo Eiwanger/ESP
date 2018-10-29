@@ -5,12 +5,13 @@ os: linux
 dist: trusty
 before_install:
  - sudo apt-get -qq update
-# - cd $
+ - pwd
+ - ls -la
  - git clone https://github.com/google/googletest.git ~/travis/build/Eiwanger/ESP
- - cd ~/travis/build/Eiwanger/ESP/googletest/googletest
+ - cd /home/travis/build/Eiwanger/ESP/googletest/googletest
  - sudo cmake .
  - sudo make
- - cd ~/travis/build/Eiwanger/ESP/ESP/Code_4_linked_list/
+ - cd /home/travis/build/Eiwanger/ESP/ESP/Code_4_linked_list/
 before_script:
     - make test
 script:
