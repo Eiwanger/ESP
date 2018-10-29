@@ -119,6 +119,7 @@ linked_list * search_from_list(linked_list *ll, char *s)
 	{
 		if(ll -> data[i] != s[i])
 		{
+			// a difference in the strings occured, start new search
 			return search_from_list(ll->next, s);
 		}
 		i++;
