@@ -16,7 +16,7 @@ before_install:
 # - sudo make
 # - cd /home/travis/build/Eiwanger/ESP/ESP/Code_4_linked_list/
 before_script:
-    - ./home/travis/build/ESP/scripts/travisMake.sh 
+ - bash /home/travis/build/Eiwanger/ESP/scripts/travisMake.sh 
 script:
     - ./unit_test
 branches:
