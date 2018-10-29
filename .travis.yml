@@ -7,7 +7,8 @@ before_install:
  - sudo apt-get -qq update
  - pwd
  - ls -la
- - git clone https://github.com/google/googletest.git /home/travis/build/Eiwanger/ESP/
+ - cd /home/travis/build/Eiwanger/ESP/
+ - git clone https://github.com/google/googletest.git 
  - ls -la
  - cd /home/travis/build/Eiwanger/ESP/googletest/googletest
  - sudo cmake .
