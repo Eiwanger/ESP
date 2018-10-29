@@ -1732,8 +1732,7 @@ TEST(compare_strings_test, test_normal_and_special_cases)
 
 	// call function with with different parameters 
 	i = compare_strings(str1, str2);
-// changed now from  0 to 2
-	EXPECT_EQ(i, 2);
+	EXPECT_EQ(i, 0);
 
 	i = compare_strings(str1, str3);
 	EXPECT_EQ(i, -1);
