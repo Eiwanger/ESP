@@ -1,6 +1,7 @@
 
 
 # ignore textfiles
+my_travis
 *.odt
 bin/
 *.png
