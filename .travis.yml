@@ -5,6 +5,7 @@ os: linux
 dist: trusty
 before_install:
  - sudo apt-get -qq update
+ - sudo apt-get install cmake
  - pwd
  - ls -la
  - cd /home/travis/build/Eiwanger/ESP/
