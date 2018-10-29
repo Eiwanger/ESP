@@ -2,8 +2,8 @@
 #include "linked_list.h"
 
 
-
-
+// This is the implemention of the basic functions
+// the parameter is always the head of the linked list
 
 /***************************************************************************/
 /*                 Test for add_to_list function                           */
@@ -20,12 +20,13 @@ TEST(add_to_list_test,test_normal) {
 	char str6[10]="fifth";
 	int i;
 
+	// create a head and then add strings to the list
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));
 
 	head->next=NULL; 
 	head->data=str; 
 	head->index=0;
-
+	// check the return value of the add_to_list function
 	i=add_to_list(head,str1);
 	EXPECT_EQ(1,i);
 
@@ -43,11 +44,9 @@ TEST(add_to_list_test,test_normal) {
 
 	i=add_to_list(head,str6);
 	EXPECT_EQ(6,i);
-
 }
 
 /*-------------------------------------------------------------------------*/
-
 // test if the function returns -1 in case the head is null
 TEST(add_to_list_test, test_head_equals_null)
 {
@@ -64,7 +63,6 @@ TEST(add_to_list_test, test_head_equals_null)
 }
 
 /*-------------------------------------------------------------------------*/
-
 // test if the function returns -1 when the string is null
 TEST(add_to_list_test, test_string_equals_null)
 {
@@ -82,7 +80,6 @@ TEST(add_to_list_test, test_string_equals_null)
 	EXPECT_EQ(i, -1);
 
 }
-
 /***************************************************************************/
 
 
@@ -110,7 +107,6 @@ TEST(display_item_test, test_normal)
 }
 
 /*-------------------------------------------------------------------------*/
-
 // test return value 0 of a listelement in the middle of a list
 TEST(display_item_test, test_return_value)
 {
@@ -151,7 +147,6 @@ TEST(display_item_test, test_return_value)
 	EXPECT_EQ(i, 0);
 }
 
-
 /*-------------------------------------------------------------------------*/
 // test the display_item function if the pointer is null
 TEST(display_item_test, test_nullpointer)
@@ -170,7 +165,6 @@ TEST(display_item_test, test_nullpointer)
 
 	EXPECT_EQ(i, -1);
 }
-
 /***************************************************************************/
 
 
@@ -210,7 +204,6 @@ TEST(display_list_test,test_nullpointer)
 	EXPECT_EQ(result, -1);
 
 }
-
 
 /*-------------------------------------------------------------------------*/
 // test display_list and check return value of the function
@@ -259,7 +252,6 @@ TEST(display_list,test_normal)
 
 	EXPECT_EQ(i, 5);
 }
-
 /***************************************************************************/
 
 
@@ -345,16 +337,16 @@ TEST(search_from_list_test,test_special_cases)
 	head->next->next->next->next->next->next->next = NULL;
 
 
-// tests with strings which differ only in the last character
+	// tests with strings which differ only in the last character
 	found=search_from_list(head,(char *)"This string tests special letters+");
 	EXPECT_EQ(found->index, 4);
 	EXPECT_STREQ(str4,found->data);
 
-found=search_from_list(head,(char *)"This string tests_special letters");
+	found=search_from_list(head,(char *)"This string tests_special letters");
 	EXPECT_EQ(found->index, 5);
 	EXPECT_STREQ(str5,found->data);
 
-found=search_from_list(head,(char *)"This string tests-special letters");
+	found=search_from_list(head,(char *)"This string tests-special letters");
 	EXPECT_EQ(found->index, 6);
 	EXPECT_STREQ(str6,found->data);
 
@@ -366,7 +358,7 @@ found=search_from_list(head,(char *)"This string tests-special letters");
 	EXPECT_EQ(found->index, 2);
 	EXPECT_STREQ(str2,found->data);
 
-// tests if the string differ in lenght
+	// tests if the string differ in lenght
 	found=search_from_list(head,(char *)"This string tests special l");
 	EXPECT_EQ((int*)found, (int*)NULL);
 }
@@ -406,15 +398,14 @@ TEST(search_from_list,test_nullpointer)
 
 	EXPECT_EQ((int *)found,(int *)NULL);
 
-// test result if string is a nullpointer
-head = (struct linked_list*) malloc(sizeof(linked_list));  
-head->next = NULL;
-head->index = 0;
-head->data = str;
+	// test result if string is a nullpointer
+	head = (struct linked_list*) malloc(sizeof(linked_list));  
+	head->next = NULL;
+	head->index = 0;
+	head->data = str;
 
 	found=search_from_list(head,(char*)NULL);
 }
-
 /***************************************************************************/
 
 
@@ -464,10 +455,10 @@ TEST(delete_from_list_test,test_normal)
 	EXPECT_STREQ(head->next->next->data,str3);
 	EXPECT_EQ(i,4);
 
-				printf("%d : %s \n", head->index, head->data);
-printf("%d : %s \n", head->next->index, head->next->data);
-printf("%d : %s \n", head->next->next->index, head->next->next->data);
-printf("%d : %s \n", head->next->next->next->index, head->next->next->next->data);
+	printf("%d : %s \n", head->index, head->data);
+	printf("%d : %s \n", head->next->index, head->next->data);
+	printf("%d : %s \n", head->next->next->index, head->next->next->data);
+	printf("%d : %s \n", head->next->next->next->index, head->next->next->next->data);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -486,7 +477,6 @@ TEST(delete_from_list_test,test_nullpointer)
 	result = delete_from_list(head, 3);
 	EXPECT_EQ(result, -1);
 }
-
 
 /*-------------------------------------------------------------------------*/
 // test delete_from_list multiple times
@@ -598,6 +588,9 @@ TEST(delete_from_list_test,test_index_out_of_bounds)
 	i = delete_from_list(head,400);
 	// after deleting index 2, str3 should now be on the pos of index 2
 	EXPECT_EQ(i,-1);
+
+	// try to delete an invalid index
+	i = delete_from_list(head, -1);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -622,14 +615,15 @@ TEST(delete_from_list_test,test_delete_last_elements)
 	head->next->index=1;
 	head->next->data=str1;
 	head->next->next = NULL;
- 
+
 	// delete the first element, expect lenght of 0
 	i = delete_from_list(head,1);
 
 	EXPECT_EQ(i,1);
 	// delete the head, it should throw an error so we expect -1 
-i = delete_from_list(head, 0);	
+	i = delete_from_list(head, 0);	
 	EXPECT_EQ(i,-1);
+
 }
 /***************************************************************************/
 
@@ -638,8 +632,8 @@ i = delete_from_list(head, 0);
 /*                 Test for combined functions                             */
 /***************************************************************************/
 
-
-TEST(combination_test,display_list_add_to_list_test)
+// test the implemention of two functions display_list and add_to_list
+TEST(combination_test,DISABLED_display_list_add_to_list_test)
 {
 	int result;
 	char str[15]="List Start";
@@ -693,68 +687,5 @@ TEST(combination_test,display_list_add_to_list_test)
 	EXPECT_EQ(head->next->next->next->next->next->next->index,6);
 	EXPECT_EQ(i,6);
 	EXPECT_STREQ(head->next->next->next->next->next->next->data,str6);
-
 }
-// sort not implemented yet
 /***************************************************************************/
-/*
-   TEST(sort,normal)
-   {
-   char str[15]="List Start";
-   char str1[10]="zero";
-   char str2[10]="first";
-   char str3[10]="second";
-   char str4[10]="third";
-   char str5[10]="fourth";
-   char str6[10]="fifth";
-   int i;
-
-   linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
-
-   head->next=NULL;
-   head->data=str;
-   head->index=0;
-
-   i=add_to_list(head,str1);
-   i=add_to_list(head,str2);
-   i=add_to_list(head,str3);
-   i=add_to_list(head,str4);
-   i=add_to_list(head,str5);
-   i=add_to_list(head,str6);
-
-   sort_list(head);
-
-   display_list(head);
-
-   }
- */
-
-/***************************************************************************/
-/*
-   TEST(empty,normal) {
-   char str[15]="List Start";
-   char str1[10]="zero";
-   char str2[10]="first";
-   char str3[10]="second";
-   char str4[10]="third";
-   char str5[10]="fourth";
-   char str6[10]="fifth";
-   int i;
-
-   linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
-
-   head->next=NULL;
-   head->data=str;
-   head->index=0;
-
-   i=add_to_list(head,str1);
-   i=add_to_list(head,str2);
-   i=add_to_list(head,str3);
-   i=add_to_list(head,str4);
-   i=add_to_list(head,str5);
-   i=add_to_list(head,str6);
-   empty_list(head);
-   }
- */
-
-

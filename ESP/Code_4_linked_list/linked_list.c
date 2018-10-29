@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// implemention of the basic functions
+
 /* 
    Function will create a new list item and add that to end of list
    create a new element (malloc)
@@ -43,7 +45,6 @@ int add_to_list(linked_list *ll, char*s)
 	return new_box -> index;
 }
 
-
 // int displays the required element 
 // (pointed by parameter linked_list *ll) in a list
 // Return: -1 if element was not found else 0 ok
@@ -60,9 +61,6 @@ int display_item(linked_list *ll)
 
 	return 0;
 }
-
-
-
 
 // List all elements in a list
 // return: number of elements in list
@@ -90,7 +88,6 @@ int display_list(linked_list *ll)
 
 // search for a data *s from a list
 // Return: NULL if not found else pointer to to data
-
 linked_list * search_from_list(linked_list *ll, char *s)
 {
 	// listobject or string doesn't exist
@@ -134,7 +131,8 @@ int delete_from_list(linked_list *ll, int index)
 {
 	linked_list *last;
 	// return -1 if list doesn't exist or is empty
-	if(ll == NULL || ll->next == NULL)
+	// or someone tries to remove the head or an invalid pointer
+	if(ll == NULL || index <= 0)
 	{
 		return -1;
 	}
