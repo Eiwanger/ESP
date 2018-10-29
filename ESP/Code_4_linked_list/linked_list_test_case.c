@@ -1,15 +1,15 @@
 #include <gtest/gtest.h>
 #include "linked_list.h"
 
-
+/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
 // this tests implement bidirecual lists
 // in linked_list.c and linked_list.h is a new function compare_strings declared
 // to disable the testcases for my own compare_strings function
-// delete the uncomment the line below
+// uncomment the lines below
 
 //#define compare_strings_test DISABLED_compare_strings_test
-
+// int compare_strings(char*f, char*s){return 0}
 
 /***************************************************************************/
 /*                 Test for add_to_list function                           */
