@@ -137,7 +137,7 @@ int delete_from_list(linked_list *ll, int index)
 	// return -1 if list doesn't exist or is empty
 	// or someone tries to remove the head which is not possible without a 
 	// diffrent return type or parametertype of linked_list**
-	if(ll == NULL || index == 0)
+	if(ll == NULL || index <= 0)
 	{
 		return -1;
 	}

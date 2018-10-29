@@ -1,8 +1,13 @@
 #include <gtest/gtest.h>
 #include "linked_list.h"
 
+/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
-
+// this tests implement the additional functions of the linked list
+// I also test a function of my own
+// to disable the tests, uncomment the following lines
+//#define compare_strings_test DISABLED_compare_strings_test
+// int compare_strings(char* f, char*s){ return 0 }
 
 
 /***************************************************************************/
@@ -47,7 +52,6 @@ TEST(add_to_list_test,test_normal) {
 }
 
 /*-------------------------------------------------------------------------*/
-
 // test if the function returns -1 in case the head is null
 TEST(add_to_list_test, test_head_equals_null)
 {
@@ -64,7 +68,6 @@ TEST(add_to_list_test, test_head_equals_null)
 }
 
 /*-------------------------------------------------------------------------*/
-
 // test if the function returns -1 when the string is null
 TEST(add_to_list_test, test_string_equals_null)
 {
@@ -82,7 +85,6 @@ TEST(add_to_list_test, test_string_equals_null)
 	EXPECT_EQ(i, -1);
 
 }
-
 /***************************************************************************/
 
 
@@ -110,7 +112,6 @@ TEST(display_item_test, test_normal)
 }
 
 /*-------------------------------------------------------------------------*/
-
 // test return value ok of a listelement in the middle of a list
 TEST(display_item_test, test_return_ok)
 {
@@ -151,7 +152,6 @@ TEST(display_item_test, test_return_ok)
 	EXPECT_EQ(i, 0);
 }
 
-
 /*-------------------------------------------------------------------------*/
 // test the display_item function if the pointer is null
 TEST(display_item_test, test_nullpointer)
@@ -170,7 +170,6 @@ TEST(display_item_test, test_nullpointer)
 
 	EXPECT_EQ(i, -1);
 }
-
 /***************************************************************************/
 
 
@@ -212,7 +211,6 @@ TEST(display_list_test,test_nullpointer)
 
 }
 
-
 /*-------------------------------------------------------------------------*/
 // test display_list and check return value of the function
 TEST(display_list,test_normal)
@@ -222,10 +220,7 @@ TEST(display_list,test_normal)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
-
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
 
@@ -261,7 +256,6 @@ TEST(display_list,test_normal)
 	// 5 values in the list => we expect a 5
 	EXPECT_EQ(i, 5);
 }
-
 /***************************************************************************/
 
 
@@ -417,7 +411,6 @@ TEST(search_from_list,test_nullpointer)
 	found=search_from_list(head,(char*)NULL);
 	EXPECT_EQ((int*)found, (int*)NULL);
 }
-
 /***************************************************************************/
 
 
@@ -433,8 +426,6 @@ TEST(delete_from_list_test,test_normal)
 	char str2[10]="first";
 	char str3[10]="second";
 	char str4[10]="third";
-	char str5[10]="fourth";
-	char str6[10]="fifth";
 	int i;
 
 	linked_list *head = (struct linked_list*) malloc(sizeof(linked_list));  
@@ -467,11 +458,6 @@ TEST(delete_from_list_test,test_normal)
 	EXPECT_STREQ(head->next->next->data,str3);
 	// we delete one, so there a still 4 elements left in the list
 	EXPECT_EQ(i,4);
-
-	printf("%d : %s \n", head->index, head->data);
-	printf("%d : %s \n", head->next->index, head->next->data);
-	printf("%d : %s \n", head->next->next->index, head->next->next->data);
-	printf("%d : %s \n", head->next->next->next->index, head->next->next->next->data);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -549,8 +535,6 @@ TEST(delete_from_list_test,test_delete_head) {
 
 	i = delete_from_list(head,0);
 	EXPECT_EQ(i, -1);
-
-
 }
 
 /*-------------------------------------------------------------------------*/
@@ -657,11 +641,12 @@ TEST(delete_from_list_test,test_index_out_of_bounds)
 	head->next->next->next->next->data=str4;
 	head->next->next->next->next->next = NULL;
 
-	// check if str2 is on pos index 2
-	EXPECT_STREQ(head->next->next->data,str2);
-
 	i = delete_from_list(head,400);
-	// after deleting index 2, str3 should now be on the pos of index 2
+	// check the result if the index is to high
+	EXPECT_EQ(i,-1);
+	
+	i = delete_from_list(head, -1);
+	// check the result if the index is negativ
 	EXPECT_EQ(i,-1);
 }
 
@@ -858,8 +843,8 @@ TEST(swap_items_test,test_normal)
 	EXPECT_STREQ(head->next->data, str2);
 	EXPECT_STREQ(head->next->next->data, str1);
 }
-/*-------------------------------------------------------------------------*/
 
+/*-------------------------------------------------------------------------*/
 // test swap_items with strings which differ in legth expecting 0 for OK 
 TEST(swap_items_test,test_swap_different_length)
 {
@@ -907,8 +892,8 @@ TEST(swap_items_test,test_swap_different_length)
 	EXPECT_STREQ(head->next->data, str2);
 	EXPECT_STREQ(head->next->next->data, str1);
 }
-/*-------------------------------------------------------------------------*/
 
+/*-------------------------------------------------------------------------*/
 // test swap_items expecting -1 for error 
 TEST(swap_items_test,test_nullpointer)
 {
@@ -1019,13 +1004,13 @@ TEST(swap_items_test,test_swap_head)
 	EXPECT_STREQ(head->data, str1);
 	EXPECT_STREQ(head->next->data, str);
 }
-
 /***************************************************************************/
 
 
 /***************************************************************************/
 /*                 Test for sort_list                                      */
 /***************************************************************************/
+
 // test sort_list without expecting errors
 TEST(sort_list_test,test_normal)
 {
@@ -1110,6 +1095,7 @@ TEST(sort_list_test,test_special_cases)
 	EXPECT_STREQ(head->next->next->next->data, str3);	
 	EXPECT_STREQ(head->next->next->next->next->data, str4);	
 }
+
 /*-------------------------------------------------------------------------*/
 // test sort_list in case of a nullpointer
 TEST(sort_list_test,test_nullpointer)
@@ -1124,13 +1110,13 @@ TEST(sort_list_test,test_nullpointer)
 	EXPECT_EQ(i, -1);	
 
 }
-
 /***************************************************************************/
 
 
 /***************************************************************************/
 /*                 Test for linkedlist_status                              */
 /***************************************************************************/
+
 // test linkedlist_status without expecting errors
 TEST(linkedlist_status_test,test_normal)
 {
@@ -1184,18 +1170,15 @@ TEST(linkedlist_status_test,test_nullpointer)
 	// we expect an error so -1 
 	EXPECT_EQ(i , -1);
 }
-
-
 /***************************************************************************/
-
 
 
 /***************************************************************************/
 /*                 Test for combined functions                             */
 /***************************************************************************/
 
-
-TEST(combination_test,display_list_add_to_list_test)
+// test the functions display list and add_to_list
+TEST(combination_test,DISABLED_display_list_add_to_list_test)
 {
 	int result;
 	char str[15]="List Start";
@@ -1253,8 +1236,9 @@ TEST(combination_test,display_list_add_to_list_test)
 }
 
 /***************************************************************************/
-/*                 Test for compare_strings                                      */
+/*                 Test for compare_strings                                */
 /***************************************************************************/
+
 // test my own function compare_strings for the case of a nullpointer
 TEST(compare_strings_test, test_nullpointer)
 {
@@ -1270,8 +1254,8 @@ TEST(compare_strings_test, test_nullpointer)
 	i = compare_strings(s, f);
 	EXPECT_EQ(i, 0);
 }
-/*-------------------------------------------------------------------------*/
 
+/*-------------------------------------------------------------------------*/
 // test my own function compare_strings for the case of a nullpointer
 TEST(compare_strings_test, test_normal_and_special_cases)
 {
