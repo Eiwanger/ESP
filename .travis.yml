@@ -14,9 +14,9 @@ before_install:
  - cd /home/travis/build/Eiwanger/ESP/googletest/googletest
  - sudo cmake .
 # - sudo make
- - cd /home/travis/build/Eiwanger/ESP/ESP/Code_4_linked_list/
+# - cd /home/travis/build/Eiwanger/ESP/ESP/Code_4_linked_list/
 before_script:
-    - bash scripts/travisMake.sh 
+    - bash /home/travis/build/ESP/scripts/travisMake.sh 
 script:
     - ./unit_test
 branches:
