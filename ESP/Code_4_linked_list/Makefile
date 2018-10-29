@@ -76,7 +76,7 @@ libgtest.a:
 
 ## own Unit test code
 $(UNIT_TEST_NAME).o: $(UNIT_TEST_NAME).c $(HEADER_FILE_NAME).h
-	$(CPP) -c -isystem $(GTEST_DIR)/include -I$(GTEST_DIR) $(UNIT_TEST_NAME).c -o $(UNIT_TEST_NAME).o
+	$(CPP) -c -Wall -isystem $(GTEST_DIR)/include -I$(GTEST_DIR) $(UNIT_TEST_NAME).c -o $(UNIT_TEST_NAME).o
 
 
 $(PROGRAM_NAME)_test.o: $(PROGRAM_NAME).c 
