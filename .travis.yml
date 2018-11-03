@@ -15,8 +15,6 @@ before_install:
  - ls -la
  - cd /home/travis/build/Eiwanger/ESP/googletest/googletest
  - sudo cmake .
-# - sudo make
-# - cd /home/travis/build/Eiwanger/ESP/ESP/Code_4_linked_list/
 before_script:
  - bash /home/travis/build/Eiwanger/ESP/scripts/travisMake.sh 
 script:
