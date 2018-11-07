@@ -232,7 +232,7 @@ int empty_list(linked_list *ll)
 		tmp = tmp->next;
 	}
 	// now we are at the last position
-	last_index = tmp->index + 1;
+	last_index = tmp->index;
 
 	// check if the first element is null, if not delete it
 	while(ll->next != NULL)
