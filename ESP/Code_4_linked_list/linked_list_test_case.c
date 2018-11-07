@@ -3,7 +3,7 @@
 
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
-// this tests implement the additional functions of the linked list
+// this tests implement the bidir functions of the linked list
 // I also test a function of my own
 // to disable the tests, uncomment the following lines
 //#define compare_strings_test DISABLED_compare_strings_test
