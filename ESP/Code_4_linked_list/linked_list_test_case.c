@@ -822,7 +822,7 @@ TEST(empty_list_test,test_only_head)
 
 	i = empty_list(head);
 	// after empty_list call check the amount of items which were in the list
-	EXPECT_EQ(i,0);
+	EXPECT_EQ(i,1);
 	// check if head ->next is null
 	EXPECT_EQ((linked_list*)head->next, (linked_list*)NULL);
 }
